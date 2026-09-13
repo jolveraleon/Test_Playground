@@ -663,7 +663,7 @@
     "use strict";
 
     // Pegue aquí la URL de la implementación web de Google Apps Script.
-    const SUBMISSION_ENDPOINT = "https://script.google.com/macros/s/AKfycbyBkH-3pN3ynmyygoYZUeCLcp5cH05BrPiLxEBkOF-FFvxGlgkvB1CAjw1yjVKTDthMtw/exec";
+    const SUBMISSION_ENDPOINT = "https://script.google.com/macros/s/AKfycbzESEpYHFerYfX0K8a9u8By3rIG8FBlJKLHmvGGOuIVaksCia5UfzN6hYZGajm3SxnSmg/exec";
     const SCHEMA_VERSION = "SIN-CONTRIBUYENTES-2026-09-v1";
     const DRAFT_KEY = "sin_costos_cumplimiento_draft_v1";
 
@@ -967,23 +967,43 @@
       };
     }
 
-    function submitViaIframe(payload) {
-      const hiddenForm = document.createElement("form");
-      hiddenForm.method = "POST";
-      hiddenForm.action = SUBMISSION_ENDPOINT;
-      hiddenForm.target = "submissionFrame";
-      hiddenForm.style.display = "none";
-      const input = document.createElement("input");
-      input.type = "hidden";
-      input.name = "payload";
-      input.value = JSON.stringify(payload);
-      hiddenForm.appendChild(input);
-      document.body.appendChild(hiddenForm);
-      hiddenForm.submit();
-      hiddenForm.remove();
+    async function postPayload(payload) {
+      await fetch(SUBMISSION_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        cache: "no-store",
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        body: JSON.stringify(payload)
+      });
     }
 
-    form.addEventListener("submit", event => {
+    function verifyStored(id) {
+      return new Promise(resolve => {
+        const callbackName = `sinVerify_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+        const script = document.createElement("script");
+        const cleanup = result => {
+          window.clearTimeout(timer);
+          delete window[callbackName];
+          script.remove();
+          resolve(result);
+        };
+        window[callbackName] = data => cleanup(Boolean(data && data.found));
+        script.onerror = () => cleanup(false);
+        script.src = `${SUBMISSION_ENDPOINT}?response_id=${encodeURIComponent(id)}&callback=${callbackName}&t=${Date.now()}`;
+        const timer = window.setTimeout(() => cleanup(false), 6000);
+        document.head.appendChild(script);
+      });
+    }
+
+    async function waitUntilStored(id) {
+      for (let attempt = 0; attempt < 5; attempt += 1) {
+        if (await verifyStored(id)) return true;
+        await new Promise(resolve => window.setTimeout(resolve, 1000 + attempt * 500));
+      }
+      return false;
+    }
+
+    form.addEventListener("submit", async event => {
       event.preventDefault();
       if (submitPending) return;
       if (SUBMISSION_ENDPOINT.includes("PEGAR_AQUI")) {
@@ -995,28 +1015,19 @@
       submitStatus.classList.add("show");
       const payload = buildPayload();
       sessionStorage.setItem("last_submission", JSON.stringify(payload));
-      submitViaIframe(payload);
-      window.setTimeout(() => {
-        if (!submitPending) return;
+      try {
+        await postPayload(payload);
+        const stored = await waitUntilStored(payload.response_id);
+        if (!stored) throw new Error("La respuesta no apareció en la hoja de destino.");
+        submitPending = false;
+        localStorage.removeItem(DRAFT_KEY);
+        document.getElementById("confirmationId").textContent = `Código de confirmación: ${payload.response_id}`;
+        showStep(allSteps.find(step => step.dataset.step === "thanks"));
+      } catch (error) {
         submitPending = false;
         submitButton.disabled = false;
-        submitStatus.textContent = "No fue posible confirmar el guardado. Verifique su conexión e intente nuevamente; el identificador evita duplicados.";
-      }, 15000);
-    });
-
-    window.addEventListener("message", event => {
-      if (!event.data || !submitPending) return;
-      if (event.data.type === "sin-survey-error") {
-        submitPending = false;
-        submitButton.disabled = false;
-        submitStatus.textContent = `La respuesta no pudo guardarse: ${event.data.message || "error no especificado"}`;
-        return;
+        submitStatus.textContent = `No fue posible confirmar el guardado: ${error.message}`;
       }
-      if (event.data.type !== "sin-survey-saved" || event.data.responseId !== responseId) return;
-      submitPending = false;
-      localStorage.removeItem(DRAFT_KEY);
-      document.getElementById("confirmationId").textContent = `Código de confirmación: ${event.data.responseId || responseId}`;
-      showStep(allSteps.find(step => step.dataset.step === "thanks"));
     });
 
     restoreDraft();
