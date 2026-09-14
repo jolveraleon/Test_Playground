@@ -558,7 +558,7 @@
   <p class="hint">Seleccione una opción en cada fila.</p>
   <div class="matrix" id="fiscalizationMatrix"></div>
   <div class="field" style="margin-top:18px"><label for="q12_costo_externo_anual">¿Cuánto pagó en total por esos servicios externos durante los últimos 12 meses? (Bs)</label><input id="q12_costo_externo_anual" name="q12_costo_externo_anual" type="number" min="0" step="0.01" inputmode="decimal" required></div>
-  <p class="hint after-field">No incluya pagos ya registrados como parte del servicio contable mensual habitual, ni impuestos, multas o intereses. Si un mismo pago cubrió varias acciones, regístrelo una sola vez. Si no realizó un pago adicional, escriba 0.</p>
+  <p class="hint after-field">No incluya pagos ya registrados como parte del servicio contable mensual habitual, ni impuestos, multas o intereses. Si no realizó un pago adicional, escriba 0.</p>
   <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
 </section>
 
@@ -696,7 +696,9 @@
     "Contratar un abogado tributarista u otro especialista legal tributario",
     "Contratar apoyo para trámites u otras gestiones administrativas"
   ];
-  const fiscalizationOptions = ["Personal interno", "Servicio externo", "Ambos", "No se realiza o no aplica"];
+  const fiscalizationOptions = fiscalizationRows.map((_, index) => index < 4
+    ? ["Personal interno", "Servicio externo", "No se realiza o no aplica"]
+    : ["Servicio externo", "No se realiza o no aplica"]);
 
   const difficultyRows = [
     "Emitir facturas",
@@ -747,7 +749,8 @@
       item.appendChild(legend);
       const choices = document.createElement("div");
       choices.className = "matrix-options";
-      options.forEach((option, optionIndex) => {
+      const rowOptions = Array.isArray(options[0]) ? options[index] : options;
+      rowOptions.forEach((option, optionIndex) => {
         const label = document.createElement("label");
         const input = document.createElement("input");
         input.type = "radio";
@@ -913,6 +916,15 @@
       input.closest("fieldset").querySelectorAll('input[type="checkbox"]:not([data-exclusive])').forEach(box => { box.checked = false; });
     } else if (input.type === "checkbox" && input.checked) {
       input.closest("fieldset")?.querySelectorAll("[data-exclusive]").forEach(box => { box.checked = false; });
+    }
+    const limitedFieldset = input.closest("fieldset[data-max]");
+    if (input.type === "checkbox" && input.checked && limitedFieldset) {
+      const max = Number(limitedFieldset.dataset.max);
+      if (selectedCount(limitedFieldset) > max) {
+        input.checked = false;
+        displayError(input.closest(".step").querySelector(".error"), `Seleccione como máximo ${max} opciones.`);
+        return;
+      }
     }
     if (input.dataset.disableTargets) {
       input.dataset.disableTargets.split(",").forEach(id => {
