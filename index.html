@@ -7,392 +7,157 @@
   <title>Encuesta de costos de cumplimiento tributario</title>
   <style>
     :root {
-      --ink: #15353b;
-      --muted: #5c6d70;
-      --paper: #fffdf7;
-      --canvas: #f3efe3;
-      --line: #d6ddd8;
-      --teal: #176c72;
-      --teal-soft: #e4f0ee;
-      --ochre: #d79a19;
-      --red: #a63d2f;
-      --danger: #9f2f25;
-      --shadow: 0 18px 45px rgba(25, 53, 55, 0.13);
+      --azul: #17365d;
+      --azul-2: #24588a;
+      --celeste: #eaf2f8;
+      --tinta: #1f2933;
+      --muted: #5f6b76;
+      --fondo: #f3f6f8;
+      --papel: #ffffff;
+      --linea: #d8e0e7;
+      --foco: #f6b44c;
+      --error: #a12b25;
+      --error-bg: #fce9e7;
+      --exito: #176b45;
+      --sombra: 0 16px 42px rgba(23, 54, 93, .12);
     }
-
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 8% 8%, rgba(215, 154, 25, 0.16), transparent 25rem),
-        radial-gradient(circle at 93% 90%, rgba(23, 108, 114, 0.13), transparent 28rem),
-        var(--canvas);
-      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
       min-height: 100vh;
+      color: var(--tinta);
+      background: linear-gradient(145deg, #eef3f7, #f8f6ef);
+      font-family: Arial, Helvetica, sans-serif;
     }
-
-    button, input, select, textarea { font: inherit; }
+    button, input, textarea { font: inherit; }
     button { cursor: pointer; }
-    fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
-
-    .shell {
-      width: min(960px, calc(100% - 28px));
-      margin: 24px auto;
-    }
-
+    a { color: #174f82; }
+    fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+    [hidden] { display: none !important; }
+    .shell { width: min(1000px, calc(100% - 28px)); margin: 24px auto; }
     .masthead {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 18px;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      padding: 18px 22px;
-      background: var(--ink);
+      gap: 20px;
+      padding: 20px 24px;
       color: white;
-      border-radius: 20px 20px 0 0;
+      background: var(--azul);
+      border-radius: 18px 18px 0 0;
     }
-
-    .masthead strong {
-      display: block;
-      font-family: Georgia, serif;
-      font-size: clamp(1.05rem, 2.3vw, 1.35rem);
-      letter-spacing: 0.01em;
-    }
-
-    .masthead span { color: #d8e6e4; font-size: 0.86rem; }
-
+    .masthead strong { display: block; font-size: clamp(1rem, 2.3vw, 1.35rem); }
+    .masthead span { display: block; margin-top: 5px; color: #dce9f4; font-size: .86rem; }
     .mark {
-      width: 46px;
-      height: 46px;
+      flex: 0 0 auto;
       display: grid;
+      width: 54px;
+      height: 54px;
       place-items: center;
-      border: 2px solid rgba(255,255,255,.65);
+      border: 2px solid rgba(255,255,255,.7);
       border-radius: 50%;
-      font-family: Georgia, serif;
-      font-weight: 700;
+      font-weight: 800;
     }
-
     .progress-wrap {
-      background: rgba(255,255,255,.82);
-      border-left: 1px solid var(--line);
-      border-right: 1px solid var(--line);
-      padding: 14px 22px 12px;
       position: sticky;
       top: 0;
       z-index: 20;
-      backdrop-filter: blur(10px);
+      padding: 13px 24px;
+      background: rgba(255,255,255,.95);
+      border-inline: 1px solid var(--linea);
+      backdrop-filter: blur(9px);
     }
-
-    .progress-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 8px;
-      color: var(--muted);
-      font-size: .82rem;
-    }
-
-    .progress-track {
-      height: 7px;
-      overflow: hidden;
-      border-radius: 999px;
-      background: #dce4df;
-    }
-
-    .progress-bar {
-      width: 0;
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--ochre), var(--teal));
-      transition: width .35s ease;
-    }
-
-    main {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-top: 0;
-      border-radius: 0 0 20px 20px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .step {
-      display: none;
-      min-height: 560px;
-      padding: clamp(28px, 5vw, 54px);
-      animation: reveal .24s ease-out;
-    }
-
-    .step.active { display: block; }
-
-    @keyframes reveal {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .eyebrow {
-      display: inline-block;
-      margin-bottom: 14px;
-      color: var(--teal);
-      font-size: .78rem;
-      font-weight: 800;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    h1, h2 {
-      font-family: Georgia, serif;
-      line-height: 1.12;
-      margin: 0 0 18px;
-    }
-
-    h1 { font-size: clamp(2rem, 6vw, 3.4rem); max-width: 760px; }
-    h2 { font-size: clamp(1.45rem, 4vw, 2.25rem); }
-
-    .lead {
-      max-width: 760px;
-      color: var(--muted);
-      font-size: 1.05rem;
-      line-height: 1.65;
-    }
-
-    .notice {
-      margin: 26px 0;
-      padding: 18px 20px;
-      border-left: 5px solid var(--ochre);
-      border-radius: 10px;
-      background: #fff7df;
-      line-height: 1.5;
-    }
-
-    .question {
-      font-size: clamp(1.05rem, 2.6vw, 1.25rem);
-      font-weight: 700;
-      line-height: 1.45;
-      margin-bottom: 20px;
-    }
-
-    .hint {
-      margin: -8px 0 18px;
-      color: var(--muted);
-      font-size: .92rem;
-      line-height: 1.45;
-    }
-
+    .progress-meta { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 8px; color: var(--muted); font-size: .83rem; }
+    .progress-track { height: 7px; overflow: hidden; border-radius: 99px; background: #dce5ec; }
+    .progress-bar { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--foco), var(--azul-2)); transition: width .25s ease; }
+    main { overflow: hidden; background: var(--papel); border: 1px solid var(--linea); border-top: 0; border-radius: 0 0 18px 18px; box-shadow: var(--sombra); }
+    .step { display: none; min-height: 575px; padding: clamp(28px, 5vw, 54px); }
+    .step.active { display: block; animation: appear .2s ease-out; }
+    @keyframes appear { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .eyebrow { display: inline-block; margin-bottom: 12px; color: var(--azul-2); font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    h1, h2 { margin: 0 0 18px; color: var(--azul); line-height: 1.16; }
+    h1 { max-width: 820px; font-size: clamp(1.8rem, 5vw, 3rem); }
+    h2 { font-size: clamp(1.35rem, 3.5vw, 2rem); }
+    p { line-height: 1.55; }
+    .lead { max-width: 820px; color: var(--muted); font-size: 1.02rem; }
+    .notice { margin: 22px 0; padding: 17px 19px; border-left: 5px solid var(--foco); border-radius: 9px; background: #fff8e7; line-height: 1.55; }
+    .privacy { margin: 22px 0; padding: 17px 19px; border: 1px solid #cdddeb; border-radius: 10px; background: #f4f8fb; font-size: .92rem; line-height: 1.55; }
+    .draft-note { margin: 14px 0; padding: 12px 14px; border-radius: 8px; background: var(--celeste); font-size: .9rem; }
+    .question { display: block; margin: 0 0 18px; font-size: clamp(1.05rem, 2.5vw, 1.23rem); font-weight: 700; line-height: 1.45; }
+    .hint { margin: -7px 0 18px; color: var(--muted); font-size: .91rem; line-height: 1.48; }
     .options { display: grid; gap: 10px; }
-
     .option {
       display: flex;
       align-items: flex-start;
-      gap: 12px;
-      padding: 14px 16px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
+      gap: 11px;
+      padding: 13px 15px;
       background: white;
-      transition: border-color .15s, background .15s, transform .15s;
+      border: 1px solid var(--linea);
+      border-radius: 10px;
+      line-height: 1.4;
+      transition: border-color .15s, background .15s;
     }
-
-    .option:hover { border-color: var(--teal); transform: translateY(-1px); }
-    .option:has(input:checked) { border-color: var(--teal); background: var(--teal-soft); }
-    input[type="radio"], input[type="checkbox"] { accent-color: var(--teal); margin-top: 3px; }
-
-    .field-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .field { display: grid; gap: 7px; }
-    .hint.after-field { margin-top: 12px; }
-    .field.full { grid-column: 1 / -1; }
-    .field label { font-weight: 700; font-size: .9rem; }
-
-    input[type="number"], input[type="text"], select, textarea {
+    .option:hover { border-color: var(--azul-2); }
+    .option:has(input:checked) { border-color: var(--azul-2); background: var(--celeste); }
+    input[type="radio"], input[type="checkbox"] { flex: 0 0 auto; margin-top: 3px; accent-color: var(--azul-2); }
+    .field { display: grid; gap: 7px; margin-top: 16px; }
+    .field label { font-size: .91rem; font-weight: 700; }
+    input[type="number"], input[type="text"], textarea {
       width: 100%;
       padding: 13px 14px;
-      color: var(--ink);
-      border: 1px solid #bfc9c5;
-      border-radius: 10px;
+      color: var(--tinta);
       background: white;
+      border: 1px solid #b9c5ce;
+      border-radius: 9px;
     }
-
-    input:focus, select:focus, textarea:focus {
-      outline: 3px solid rgba(23,108,114,.18);
-      border-color: var(--teal);
-    }
-
-    textarea { min-height: 135px; resize: vertical; }
-
-    .matrix {
-      display: grid;
-      gap: 12px;
-    }
-
-    .matrix-row {
-      padding: 14px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: white;
-    }
-
-    .matrix-row > strong { display: block; margin-bottom: 11px; line-height: 1.4; }
+    input:focus, textarea:focus, button:focus-visible, a:focus-visible { outline: 3px solid rgba(246,180,76,.55); outline-offset: 2px; }
+    input:disabled, textarea:disabled { color: #69757f; background: #edf1f4; }
+    textarea { min-height: 125px; resize: vertical; }
+    .counter { margin-top: 4px; color: var(--muted); font-size: .78rem; text-align: right; }
+    .conditional { margin-top: 13px; padding: 14px; border-left: 4px solid var(--azul-2); border-radius: 7px; background: #f5f8fb; }
+    .matrix { display: grid; gap: 12px; }
+    .matrix-row { padding: 14px; border: 1px solid var(--linea); border-radius: 11px; background: white; }
+    .matrix-row legend { width: 100%; margin-bottom: 11px; font-weight: 700; line-height: 1.42; }
     .matrix-options { display: flex; flex-wrap: wrap; gap: 8px; }
-
-    .matrix-options label {
-      display: inline-flex;
-      gap: 6px;
-      align-items: center;
-      padding: 8px 10px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      font-size: .84rem;
-    }
-
-    .matrix-options label:has(input:checked) { background: var(--teal-soft); border-color: var(--teal); }
-
-    details.info {
-      position: relative;
-      display: inline-block;
-      vertical-align: middle;
-      margin-left: 5px;
-    }
-
-    details.info summary {
-      list-style: none;
-      display: inline-grid;
-      place-items: center;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: var(--teal);
-      color: white;
-      font-family: Georgia, serif;
-      font-size: .9rem;
-      font-weight: 700;
-      cursor: help;
-    }
-
+    .matrix-options label { display: inline-flex; align-items: center; gap: 6px; padding: 8px 10px; border: 1px solid var(--linea); border-radius: 999px; font-size: .83rem; }
+    .matrix-options label:has(input:checked) { border-color: var(--azul-2); background: var(--celeste); }
+    .reference { margin: 14px 0; padding: 13px 15px; border-radius: 9px; background: #eef5f3; color: #294d47; font-size: .88rem; line-height: 1.5; }
+    .reference ul { margin: 7px 0 0; padding-left: 20px; }
+    details.info { display: inline-block; position: relative; margin-left: 5px; vertical-align: middle; }
+    details.info summary { display: inline-grid; width: 24px; height: 24px; place-items: center; list-style: none; color: white; background: var(--azul-2); border-radius: 50%; font-weight: 800; cursor: help; }
     details.info summary::-webkit-details-marker { display: none; }
-    details.info .info-card {
-      position: absolute;
-      z-index: 30;
-      top: 32px;
-      left: -16px;
-      width: min(330px, 78vw);
-      max-width: calc(100vw - 32px);
-      max-height: 70vh;
-      overflow-y: auto;
-      overscroll-behavior: contain;
-      padding: 13px 15px;
-      border: 1px solid var(--teal);
-      border-radius: 10px;
-      background: white;
-      box-shadow: 0 12px 30px rgba(20,50,54,.18);
-      color: var(--ink);
-      font-size: .84rem;
-      font-weight: 400;
-      line-height: 1.45;
-    }
-
-    .subquestion {
-      margin: 18px 0 10px;
-      padding-top: 16px;
-      border-top: 1px dashed var(--line);
-      font-weight: 700;
-      line-height: 1.45;
-    }
-
-    .actions {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      margin-top: 34px;
-      padding-top: 22px;
-      border-top: 1px solid var(--line);
-    }
-
-    .btn {
-      min-height: 46px;
-      padding: 11px 18px;
-      border: 0;
-      border-radius: 10px;
-      font-weight: 800;
-    }
-
-    .btn-primary { background: var(--teal); color: white; }
-    .btn-primary:hover { background: #10585d; }
-    .btn-secondary { background: #e9eeeb; color: var(--ink); }
-    .btn-danger { background: var(--red); color: white; }
-    .btn[disabled] { opacity: .55; cursor: wait; }
-
-    .error {
-      display: none;
-      margin-top: 16px;
-      padding: 11px 13px;
-      border-radius: 8px;
-      background: #fae7e3;
-      color: var(--danger);
-      font-weight: 700;
-      font-size: .9rem;
-    }
-
+    .info-card { position: absolute; z-index: 30; top: 31px; left: -14px; width: min(370px, 80vw); padding: 13px 14px; color: var(--tinta); background: white; border: 1px solid var(--azul-2); border-radius: 9px; box-shadow: var(--sombra); font-size: .85rem; font-weight: 400; line-height: 1.5; }
+    .error { display: none; margin-top: 16px; padding: 12px 14px; color: var(--error); background: var(--error-bg); border-radius: 8px; font-size: .9rem; font-weight: 700; }
     .error.show { display: block; }
-
-    .review {
-      display: grid;
-      gap: 10px;
-      margin-top: 22px;
-    }
-
-    .review-item {
-      padding: 13px 15px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: white;
-    }
-
-    .review-item strong { display: block; margin-bottom: 5px; color: var(--teal); }
-    .review-item span { color: var(--muted); white-space: pre-wrap; }
-
-    .status {
-      display: none;
-      margin-top: 18px;
-      padding: 14px;
-      border-radius: 10px;
-      background: var(--teal-soft);
-      font-weight: 700;
-    }
-
+    .actions { display: flex; justify-content: space-between; gap: 12px; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--linea); }
+    .btn { min-height: 45px; padding: 10px 18px; border: 0; border-radius: 9px; font-weight: 800; }
+    .btn-primary { color: white; background: var(--azul-2); }
+    .btn-primary:hover { background: var(--azul); }
+    .btn-secondary { color: var(--tinta); background: #e8edf1; }
+    .btn-submit { color: white; background: var(--exito); }
+    .btn-link { padding: 4px; color: var(--azul-2); background: transparent; text-decoration: underline; font-weight: 700; }
+    .btn:disabled { opacity: .58; cursor: wait; }
+    .review { display: grid; gap: 10px; margin-top: 20px; }
+    .review-item { padding: 13px 15px; border: 1px solid var(--linea); border-radius: 9px; background: #fbfcfd; }
+    .review-item strong { display: block; margin-bottom: 6px; color: var(--azul-2); line-height: 1.4; }
+    .review-item div { color: var(--muted); white-space: pre-wrap; line-height: 1.45; }
+    .status { display: none; margin-top: 16px; padding: 13px 14px; border-radius: 9px; background: #e7f4ed; color: var(--exito); font-weight: 700; }
     .status.show { display: block; }
     .tiny { color: var(--muted); font-size: .78rem; line-height: 1.45; }
-
     @media (max-width: 680px) {
       .shell { width: 100%; margin: 0; }
       .masthead, main { border-radius: 0; }
+      .masthead { padding: 16px; }
       .progress-wrap { padding-inline: 16px; }
-      .step { min-height: calc(100vh - 128px); padding: 28px 18px; }
-      .field-grid { grid-template-columns: 1fr; }
-      .actions { position: sticky; bottom: 0; background: linear-gradient(transparent, var(--paper) 22%); padding-top: 30px; }
-      .btn { flex: 1; }
+      .step { min-height: calc(100vh - 122px); padding: 27px 17px; }
+      .matrix-options { display: grid; }
+      .matrix-options label { border-radius: 8px; }
+      .actions { position: sticky; bottom: 0; z-index: 10; padding-top: 28px; background: linear-gradient(transparent, white 25%); }
+      .btn:not(.btn-link) { flex: 1; }
       details.info { position: static; }
-      details.info .info-card {
-        position: fixed;
-        top: 50%;
-        right: 16px;
-        left: 16px;
-        width: auto;
-        max-width: none;
-        max-height: min(70vh, 440px);
-        transform: translateY(-50%);
-        font-size: .93rem;
-        line-height: 1.55;
-      }
+      .info-card { position: fixed; top: 50%; right: 16px; left: 16px; width: auto; max-height: 70vh; overflow: auto; transform: translateY(-50%); }
     }
-
-    @media (prefers-reduced-motion: reduce) {
-      * { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
-    }
+    @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; animation: none !important; transition: none !important; } }
   </style>
 </head>
 <body>
@@ -400,7 +165,7 @@
     <header class="masthead">
       <div>
         <strong>Estudio de costos de cumplimiento tributario</strong>
-        <span>Cuestionario para contribuyentes | Prueba de validación</span>
+        <span>Cuestionario para micro y pequeñas empresas en Bolivia</span>
       </div>
       <div class="mark" aria-hidden="true">SIN</div>
     </header>
@@ -408,691 +173,646 @@
     <div class="progress-wrap" id="progressWrap" hidden>
       <div class="progress-meta">
         <span id="moduleLabel">Inicio</span>
-        <span id="progressLabel">0 de 22</span>
+        <span id="progressLabel">0 de 20</span>
       </div>
       <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
     </div>
 
     <main>
-      <form id="surveyForm" novalidate>
+      <form id="surveyForm" novalidate autocomplete="off">
         <section class="step active" data-step="intro" data-module="Inicio">
           <span class="eyebrow">Encuesta confidencial</span>
-          <h1>¿Cuánto tiempo y dinero requiere cumplir con sus obligaciones tributarias?</h1>
-          <p class="lead">Esta encuesta busca estimar los costos de cumplimiento de las micro y pequeñas empresas inscritas en el Régimen General. No solicita su NIT, nombre ni información que permita identificarlo.</p>
-          <div class="notice"><strong>Antes de comenzar:</strong> responda pensando únicamente en este negocio. Los costos consultados no incluyen el monto de los impuestos, multas ni intereses. Cuando se soliciten horas o pagos, regístrelos una sola vez.</div>
+          <h1>Encuesta de costos de cumplimiento para Micro y Pequeñas Empresas en Bolivia</h1>
+          <p class="lead">A nombre del Servicio de Impuestos Nacionales (SIN) y del Banco Mundial, le agradecemos mucho su tiempo y colaboración al responder esta encuesta.</p>
+          <p>El objetivo de este estudio es conocer el tiempo y los recursos que demanda a las micro y pequeñas empresas cumplir con sus obligaciones tributarias, así como identificar los factores que dificultan este proceso. Esta información permitirá identificar puntos de fricción y oportunidades de mejora que contribuyan a facilitar el cumplimiento voluntario.</p>
+          <div class="notice"><strong>Antes de comenzar:</strong> responda pensando únicamente en el negocio sobre el cual se realiza esta encuesta. Cuando se le consulte sobre costos, no incluya el monto de los impuestos pagados, multas ni intereses.</div>
+          <div class="privacy">La participación en esta encuesta es voluntaria. El Banco Mundial tratará los datos derivados de esta encuesta exclusivamente con el propósito de realizar mediciones de costos de cumplimiento tributario. Las respuestas serán anonimizadas antes de su análisis y los resultados se presentarán únicamente de forma agregada, sin que sea posible identificar a los participantes. El manejo de la información se realizará en el marco de las políticas de <a href="https://thedocs.worldbank.org/en/doc/ef071720690bb6c89776d517e61cdf21-0090012021/original/2020001878SPAspa001-Access-to-Information.pdf" target="_blank" rel="noopener noreferrer">Acceso a la Información del Banco Mundial</a>. Para información adicional, consulte el <a href="https://www.bancomundial.org/ext/es/legal/world-bank-group-privacy-notice" target="_blank" rel="noopener noreferrer">Aviso de privacidad del Grupo Banco Mundial</a>.</div>
           <label class="option">
             <input type="checkbox" name="consentimiento" value="Sí" required>
-            <span>He leído la información anterior y acepto participar voluntariamente en esta prueba.</span>
+            <span>He leído la información anterior y acepto participar voluntariamente en esta encuesta.</span>
           </label>
-          <div class="error" role="alert"></div>
+          <div class="draft-note" id="draftNote" hidden>Se recuperaron respuestas guardadas en este dispositivo. <button type="button" class="btn-link" id="clearDraft">Borrar y comenzar de nuevo</button></div>
+          <div class="error" role="alert" aria-live="assertive"></div>
           <div class="actions"><span></span><button class="btn btn-primary" type="button" data-next>Comenzar</button></div>
         </section>
 
-        <section class="step" data-q="1" data-module="Perfil del contribuyente">
-          <span class="eyebrow">Perfil del contribuyente</span>
-          <h2>Pregunta 1</h2>
-          <fieldset>
-            <legend class="question">¿Cuál es su relación con el negocio por el que responde esta encuesta?</legend>
-            <div class="options">
-              <label class="option"><input type="radio" name="q1_relacion" value="Propietario o socio" required><span>Propietario o socio</span></label>
-              <label class="option"><input type="radio" name="q1_relacion" value="Representante legal"><span>Representante legal</span></label>
-              <label class="option"><input type="radio" name="q1_relacion" value="Administrador o gerente"><span>Administrador o gerente</span></label>
-              <label class="option"><input type="radio" name="q1_relacion" value="Trabajador del negocio"><span>Trabajador del negocio</span></label>
-              <label class="option"><input type="radio" name="q1_relacion" value="Contador interno"><span>Contador interno</span></label>
-              <label class="option"><input type="radio" name="q1_relacion" value="Contador externo"><span>Contador externo</span></label>
-              <label class="option"><input type="radio" name="q1_relacion" value="Otro"><span>Otro</span></label>
-            </div>
-          </fieldset>
-          <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-        </section>
-
-        <section class="step" data-q="2" data-module="Perfil del contribuyente">
-          <span class="eyebrow">Perfil del contribuyente</span><h2>Pregunta 2</h2>
-          <p class="question">¿Cuántas personas trabajan actualmente en el negocio?</p>
-          <p class="hint">Inclúyase usted, así como propietarios, empleados y familiares que colaboran regularmente, reciban o no una remuneración.</p>
-          <div class="field"><label for="q2_personas">Número total de personas</label><input id="q2_personas" name="q2_personas" type="number" min="1" step="1" inputmode="numeric" required></div>
-          <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-        </section>
-
-        <section class="step" data-q="3" data-module="Perfil del contribuyente">
-          <span class="eyebrow">Perfil del contribuyente</span><h2>Pregunta 3</h2>
-          <fieldset><legend class="question">¿Cuál es la actividad económica principal del negocio?</legend>
-            <div class="options">
-              <label class="option"><input type="radio" name="q3_actividad" value="Comercio" required><span>Comercio</span></label>
-              <label class="option"><input type="radio" name="q3_actividad" value="Actividad profesional"><span>Actividad profesional</span></label>
-              <label class="option"><input type="radio" name="q3_actividad" value="Servicios financieros"><span>Servicios financieros</span></label>
-              <label class="option"><input type="radio" name="q3_actividad" value="Industria o manufactura"><span>Industria o manufactura</span></label>
-              <label class="option"><input type="radio" name="q3_actividad" value="Construcción"><span>Construcción</span></label>
-              <label class="option"><input type="radio" name="q3_actividad" value="Agropecuaria"><span>Agropecuaria</span></label>
-              <label class="option"><input type="radio" name="q3_actividad" value="Otros servicios"><span>Otros servicios</span></label>
-              <label class="option"><input type="radio" name="q3_actividad" value="Transporte"><span>Transporte</span></label>
-              <label class="option"><input type="radio" name="q3_actividad" value="Otro"><span>Otro</span></label>
-            </div>
-          </fieldset>
-          <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-        </section>
-
-        <section class="step" data-q="4" data-module="Perfil del contribuyente">
-          <span class="eyebrow">Perfil del contribuyente</span><h2>Pregunta 4</h2>
-          <p class="question">¿En qué departamento se encuentra la actividad principal del negocio?</p>
-          <div class="field"><label for="q4_departamento">Departamento</label><select id="q4_departamento" name="q4_departamento" required><option value="">Seleccione una opción</option><option>Chuquisaca</option><option>La Paz</option><option>Cochabamba</option><option>Oruro</option><option>Potosí</option><option>Tarija</option><option>Santa Cruz</option><option>Beni</option><option>Pando</option></select></div>
-          <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-        </section>
-
-        <section class="step" data-q="5" data-module="Perfil del contribuyente">
-          <span class="eyebrow">Perfil del contribuyente</span><h2>Pregunta 5</h2>
-          <fieldset data-checkbox-required><legend class="question">En los últimos 12 meses, ¿cuáles de las siguientes obligaciones tributarias tuvo el negocio?</legend><p class="hint">Puede marcar más de una opción.</p>
-            <div class="options">
-              <label class="option"><input type="checkbox" name="q5_obligaciones" value="IVA - Formulario 200"><span>IVA (Formulario 200)</span></label>
-              <label class="option"><input type="checkbox" name="q5_obligaciones" value="IT - Formulario 400"><span>IT (Formulario 400)</span></label>
-              <label class="option"><input type="checkbox" name="q5_obligaciones" value="IUE"><span>IUE</span></label>
-              <label class="option"><input type="checkbox" name="q5_obligaciones" value="RC-IVA o retenciones"><span>RC-IVA o retenciones</span></label>
-              <label class="option"><input type="checkbox" name="q5_obligaciones" value="Otra"><span>Otra</span></label>
-              <label class="option"><input type="checkbox" name="q5_obligaciones" value="No sabe" data-exclusive><span>No sabe</span></label>
-            </div>
-          </fieldset>
-          <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-        </section>
-
-        <section class="step" data-q="6" data-module="Gestión tributaria">
-          <span class="eyebrow">Gestión tributaria</span><h2>Pregunta 6</h2>
-          <fieldset><legend class="question">¿Quién se encarga principalmente de llevar la contabilidad y realizar las tareas tributarias del negocio?</legend>
-            <div class="options">
-              <label class="option"><input type="radio" name="q6_responsable_principal" value="Personal interno" required><span>Personal contratado por el negocio, el propietario o sus familiares</span></label>
-              <label class="option"><input type="radio" name="q6_responsable_principal" value="Servicio externo"><span>Un contador externo, una empresa o una firma contable</span></label>
-            </div>
-          </fieldset>
-          <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-        </section>
-
-        <section class="step" data-q="7" data-module="Gestión tributaria">
-          <span class="eyebrow">Gestión tributaria</span><h2>Pregunta 7</h2>
-          <p class="question">En los últimos 12 meses, para cada una de las siguientes actividades tributarias, indique quién se ha encargado principalmente de realizarla.</p>
-          <div class="matrix" id="responsibilityMatrix"></div>
-          <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-        </section>
-
-        <section class="step" data-q="8" data-module="Tiempo y recursos internos" data-branch="internal">
-          <span class="eyebrow">Tiempo y recursos internos</span><h2>Pregunta 8</h2>
-          <p class="question">¿Cuántas personas que pertenecen al negocio participan en las tareas contables o tributarias señaladas en la pregunta 7?</p>
-          <div class="field"><label for="q8_personas_internas">Número de personas</label><input id="q8_personas_internas" name="q8_personas_internas" type="number" min="1" step="1" inputmode="numeric" required></div>
-          <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-        </section>
-
-
-<section class="step" data-q="9" data-module="Tiempo y recursos internos" data-branch="internal">
-  <span class="eyebrow">Tiempo y recursos internos</span><h2>Pregunta 9</h2>
-  <p class="question">Pensando en una sola persona de las que realizan estas tareas internamente en su empresa, indique cuánto tiempo dedica en promedio a estas actividades de cumplimiento tributario.</p>
-  <p class="hint">Si varias personas participan, responda por una persona típica. No sume el tiempo de todas.</p>
-  <div class="subquestion">1. Durante un mes habitual</div>
-  <div class="field-grid"><div class="field"><label for="q9_horas_mes">Horas totales al mes</label><input id="q9_horas_mes" name="q9_horas_mes" type="number" min="0" step="1" inputmode="numeric" required></div><div class="field"><label for="q9_minutos_mes">Minutos adicionales</label><input id="q9_minutos_mes" name="q9_minutos_mes" type="number" min="0" max="59" step="1" inputmode="numeric" value="0" required></div></div>
-  <div data-subbranch="fiscal-internal">
-    <div class="subquestion">2. Durante los últimos 12 meses, tiempo adicional dedicado a atender requerimientos, fiscalizaciones u otros procesos del SIN
-      <details class="info"><summary aria-label="¿Qué significa requerimientos y fiscalizaciones?">i</summary><div class="info-card">Incluya solicitudes o comunicaciones formales del SIN que hayan exigido presentar documentos o información, aclarar o corregir datos, o atender una verificación o fiscalización dentro de un plazo.</div></details>
-    </div>
-    <div class="field-grid"><div class="field"><label for="q9_req_horas_anio">Horas totales en los últimos 12 meses</label><input id="q9_req_horas_anio" name="q9_req_horas_anio" type="number" min="0" step="1" inputmode="numeric"></div><div class="field"><label for="q9_req_minutos_anio">Minutos adicionales</label><input id="q9_req_minutos_anio" name="q9_req_minutos_anio" type="number" min="0" max="59" step="1" inputmode="numeric" value="0"></div></div>
-    <label class="option" style="margin-top:12px"><input type="checkbox" name="q9_sin_requerimientos" value="Sí" data-disable-targets="q9_req_horas_anio,q9_req_minutos_anio"><span>No tuvo que atender estos procesos durante los últimos 12 meses</span></label>
-  </div>
-  <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-</section>
-
-<section class="step" data-q="10" data-module="Tiempo y recursos internos" data-branch="internal">
-  <span class="eyebrow">Tiempo y recursos internos</span><h2>Pregunta 10</h2>
-  <p class="question">¿Cuál es el salario mensual aproximado de una persona interna que realiza estas actividades?</p>
-  <div class="field"><label for="q10_salario_mensual">Salario mensual en bolivianos (Bs)</label><input id="q10_salario_mensual" name="q10_salario_mensual" type="number" min="0" step="0.01" inputmode="decimal"></div>
-  <label class="option" style="margin-top:12px"><input type="checkbox" name="q10_sin_remuneracion" value="Sí" data-disable-targets="q10_salario_mensual"><span>Es propietario o familiar no remunerado</span></label>
-  <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-</section>
-
-<section class="step" data-q="11" data-module="Costos externos" data-branch="external">
-  <span class="eyebrow">Costos externos</span><h2>Pregunta 11</h2>
-  <p class="question">¿Cuánto paga normalmente al mes al contador o a los servicios contables o tributarios externos señalados en la pregunta 7?</p>
-  <p class="hint">Si paga con otra frecuencia, indique su equivalente mensual. No incluya costos relacionados con requerimientos o fiscalizaciones.</p>
-  <div class="field"><label for="q11_pago_externo_mes">Monto mensual en bolivianos (Bs)</label><input id="q11_pago_externo_mes" name="q11_pago_externo_mes" type="number" min="0" step="0.01" inputmode="decimal" required></div>
-  <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-</section>
-
-<section class="step" data-q="12" data-module="Atención de procesos del SIN" data-branch="fiscal-external">
-  <span class="eyebrow">Atención de procesos del SIN</span><h2>Pregunta 12</h2>
-  <p class="question">En los últimos 12 meses, indique cómo se realizaron las siguientes acciones para atender requerimientos, fiscalizaciones u otros procesos del SIN.</p>
-  <p class="hint">Seleccione una opción en cada fila.</p>
-  <div class="matrix" id="fiscalizationMatrix"></div>
-  <div class="field" style="margin-top:18px"><label for="q12_costo_externo_anual">¿Cuánto pagó en total por esos servicios externos durante los últimos 12 meses? (Bs)</label><input id="q12_costo_externo_anual" name="q12_costo_externo_anual" type="number" min="0" step="0.01" inputmode="decimal" required></div>
-  <p class="hint after-field">No incluya pagos ya registrados como parte del servicio contable mensual habitual, ni impuestos, multas o intereses. Si no realizó un pago adicional, escriba 0.</p>
-  <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-</section>
-
-<section class="step" data-q="13" data-module="Sistemas informáticos">
-  <span class="eyebrow">Sistemas informáticos</span><h2>Pregunta 13</h2>
-  <fieldset><legend class="question">¿Cómo se llevan principalmente la contabilidad o el registro de las operaciones del negocio?</legend><div class="options">
-    <label class="option"><input type="radio" name="q13_registro_contable" value="Libros o registros en papel" required><span>Libros o registros en papel</span></label>
-    <label class="option"><input type="radio" name="q13_registro_contable" value="Hojas de cálculo"><span>Hojas de cálculo, por ejemplo Excel</span></label>
-    <label class="option"><input type="radio" name="q13_registro_contable" value="Sistema informático propio"><span>Sistema informático propio</span></label>
-    <label class="option"><input type="radio" name="q13_registro_contable" value="Sistema informático contratado"><span>Sistema informático contratado o de un proveedor externo</span></label>
-    <label class="option"><input type="radio" name="q13_registro_contable" value="Otro"><span>Otro</span></label>
-  </div></fieldset>
-  <div class="field" data-subbranch="record-other"><label for="q13_registro_otro">Especifique</label><input id="q13_registro_otro" name="q13_registro_otro" type="text" maxlength="200" required></div>
-  <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-</section>
-
-<section class="step" data-q="14" data-module="Sistemas informáticos">
-  <span class="eyebrow">Sistemas informáticos</span><h2>Pregunta 14</h2>
-  <fieldset><legend class="question">¿El negocio utiliza algún software o sistema informático para su gestión contable o tributaria, incluida la facturación o el registro de compras y ventas?</legend><p class="hint">No considere sistemas utilizados exclusivamente para inventario u otras funciones ajenas a la gestión tributaria.</p><div class="options"><label class="option"><input type="radio" name="q14_usa_sistema" value="Sí" required><span>Sí</span></label><label class="option"><input type="radio" name="q14_usa_sistema" value="No"><span>No</span></label></div></fieldset>
-  <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-</section>
-
-<section class="step" data-q="15" data-module="Sistemas informáticos" data-branch="software">
-  <span class="eyebrow">Sistemas informáticos</span><h2>Pregunta 15</h2>
-  <p class="question">Durante los últimos 12 meses, ¿cuánto pagó por el software o sistema informático utilizado para la gestión contable, tributaria o para facturación de su negocio?</p>
-  <p class="hint">Incluya licencias, suscripciones y mantenimiento. Si el mismo sistema sirve para varias funciones, incluya su costo una sola vez.</p>
-  <div class="field"><label for="q15_costo_sistema_anual">Monto total pagado al año en bolivianos (Bs)</label><input id="q15_costo_sistema_anual" name="q15_costo_sistema_anual" type="number" min="0" step="0.01" inputmode="decimal"></div>
-  <label class="option" style="margin-top:12px"><input type="checkbox" name="q15_sistema_gratuito" value="Sí" data-disable-targets="q15_costo_sistema_anual"><span>Es gratuito</span></label>
-  <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-</section>
-
-<section class="step" data-q="16" data-module="Facturación">
-  <span class="eyebrow">Facturación</span><h2>Pregunta 16</h2>
-  <fieldset><legend class="question">¿Qué modalidad utiliza actualmente su negocio para emitir facturas?</legend><div class="options">
-    <label class="option"><input type="radio" name="q16_modalidad_factura" value="Facturación Electrónica en Línea" required><span>Facturación Electrónica en Línea</span></label>
-    <label class="option"><input type="radio" name="q16_modalidad_factura" value="Facturación Computarizada en Línea"><span>Facturación Computarizada en Línea</span></label>
-    <label class="option"><input type="radio" name="q16_modalidad_factura" value="Facturación Portal Web en Línea"><span>Facturación Portal Web en Línea</span></label>
-    <label class="option"><input type="radio" name="q16_modalidad_factura" value="Facturación Manual"><span>Facturación Manual</span></label>
-    <label class="option"><input type="radio" name="q16_modalidad_factura" value="No sabe o no corresponde"><span>No sabe o no corresponde</span></label>
-  </div></fieldset>
-  <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-</section>
-
-<section class="step" data-q="17" data-module="Facturación">
-  <span class="eyebrow">Facturación</span><h2>Pregunta 17</h2>
-  <p class="question">Aproximadamente, ¿cuántas facturas emite el negocio durante un mes normal?</p>
-  <div class="field"><label for="q17_facturas_mes">Número de facturas al mes</label><input id="q17_facturas_mes" name="q17_facturas_mes" type="number" min="0" step="1" inputmode="numeric"></div>
-  <label class="option" style="margin-top:12px"><input type="checkbox" name="q17_no_sabe_facturas" value="Sí" data-disable-targets="q17_facturas_mes"><span>No sabe</span></label>
-  <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-</section>
-
-<section class="step" data-q="18" data-module="Percepción y obstáculos">
-  <span class="eyebrow">Percepción y obstáculos</span><h2>Pregunta 18</h2>
-  <fieldset><legend class="question">En general, ¿qué tan fácil o difícil le resulta cumplir con las obligaciones tributarias del negocio?</legend><div class="options">
-    <label class="option"><input type="radio" name="q18_dificultad_general" value="Muy fácil" required><span>Muy fácil</span></label><label class="option"><input type="radio" name="q18_dificultad_general" value="Fácil"><span>Fácil</span></label><label class="option"><input type="radio" name="q18_dificultad_general" value="Ni fácil ni difícil"><span>Ni fácil ni difícil</span></label><label class="option"><input type="radio" name="q18_dificultad_general" value="Difícil"><span>Difícil</span></label><label class="option"><input type="radio" name="q18_dificultad_general" value="Muy difícil"><span>Muy difícil</span></label>
-  </div></fieldset>
-  <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-</section>
-
-<section class="step" data-q="19" data-module="Percepción y obstáculos">
-  <span class="eyebrow">Percepción y obstáculos</span><h2>Pregunta 19</h2>
-  <p class="question">¿Qué tan fácil o difícil considera cada una de las siguientes actividades?</p>
-  <div class="matrix" id="difficultyMatrix"></div>
-  <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-</section>
-
-<section class="step" data-q="20" data-module="Percepción y obstáculos">
-  <span class="eyebrow">Percepción y obstáculos</span><h2>Pregunta 20</h2>
-  <fieldset data-checkbox-required data-max="3"><legend class="question">¿Cuáles son los tres principales obstáculos que encuentra para cumplir con sus obligaciones tributarias?</legend><p class="hint">Seleccione como máximo tres opciones.</p><div class="options">
-    <label class="option"><input type="checkbox" name="q20_obstaculos" value="Tiempo requerido"><span>Tiempo que requieren los trámites o actividades</span></label><label class="option"><input type="checkbox" name="q20_obstaculos" value="Dificultad para comprender"><span>Dificultad para comprender los requisitos o las obligaciones</span></label><label class="option"><input type="checkbox" name="q20_obstaculos" value="Costo de servicios externos"><span>Costo de servicios contables o tributarios externos</span></label><label class="option"><input type="checkbox" name="q20_obstaculos" value="Herramientas digitales"><span>Dificultades de acceso, uso o funcionamiento de herramientas digitales</span></label><label class="option"><input type="checkbox" name="q20_obstaculos" value="Capacitación u orientación"><span>Necesidad de capacitación u orientación</span></label><label class="option"><input type="checkbox" name="q20_obstaculos" value="Otro"><span>Otro</span></label><label class="option"><input type="checkbox" name="q20_obstaculos" value="Ninguno" data-exclusive><span>Ninguno</span></label>
-  </div></fieldset>
-  <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-</section>
-
-<section class="step" data-q="21" data-module="Herramientas del SIN">
-  <span class="eyebrow">Herramientas del SIN</span><h2>Pregunta 21</h2>
-  <p class="question">¿Con qué frecuencia utiliza cada una de las siguientes herramientas digitales del SIN para cumplir con sus obligaciones tributarias?</p>
-  <p class="hint">Considere su uso durante los últimos 12 meses.</p>
-  <div class="matrix" id="toolsMatrix"></div>
-  <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Siguiente</button></div>
-</section>
-
-<section class="step" data-q="22" data-module="Cierre">
-  <span class="eyebrow">Cierre</span><h2>Pregunta 22</h2>
-  <p class="question">¿Qué cambio facilitaría más el cumplimiento de sus obligaciones tributarias?</p>
-  <div class="field"><label for="q22_mejora">Respuesta (opcional)</label><textarea id="q22_mejora" name="q22_mejora" maxlength="1000" placeholder="Escriba aquí su respuesta"></textarea></div>
-  <div class="error" role="alert"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>Revisar respuestas</button></div>
-</section>
+        <div id="questionContainer"></div>
 
         <section class="step" data-step="review" data-module="Revisión">
-          <span class="eyebrow">Antes de enviar</span><h2>Revise sus respuestas</h2>
-          <p class="lead">Puede regresar para corregir cualquier dato. Al enviar, se guardará una respuesta anónima en la base del estudio.</p>
+          <span class="eyebrow">Antes de enviar</span>
+          <h2>Revise sus respuestas</h2>
+          <p class="lead">Puede regresar para corregir cualquier dato. Al enviar, la respuesta se guardará en la base del estudio.</p>
           <div class="review" id="reviewList"></div>
-          <div class="error" role="alert"></div>
-          <div class="status" id="submitStatus" role="status"></div>
-          <div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-danger" type="submit" id="submitButton">Enviar respuesta</button></div>
-          <p class="tiny">La información se utilizará exclusivamente para fines estadísticos y para validar el cuestionario.</p>
+          <div class="error" role="alert" aria-live="assertive"></div>
+          <div class="status" id="submitStatus" role="status" aria-live="polite"></div>
+          <div class="actions">
+            <button class="btn btn-secondary" type="button" data-prev>Anterior</button>
+            <button class="btn btn-submit" type="submit" id="submitButton">Enviar respuesta</button>
+          </div>
+          <p class="tiny">No cierre esta ventana mientras se guarda la respuesta.</p>
         </section>
 
         <section class="step" data-step="thanks" data-module="Finalizado">
-          <span class="eyebrow">Respuesta registrada</span><h1>Muchas gracias por su participación.</h1>
-          <p class="lead">Su respuesta fue guardada. Ya puede cerrar esta página.</p>
+          <span class="eyebrow">Respuesta registrada</span>
+          <h1>Muchas gracias por su participación.</h1>
+          <p class="lead">Su respuesta fue guardada correctamente. Ya puede cerrar esta página.</p>
           <div class="notice" id="confirmationId"></div>
         </section>
       </form>
     </main>
   </div>
 
-  <iframe name="submissionFrame" id="submissionFrame" title="Envío de respuestas" hidden></iframe>
+  <script>
+    'use strict';
 
+    const SCHEMA_VERSION = 'SIN-MYPE-2026-09-v3';
+    const DRAFT_KEY = 'sin_mype_costos_cumplimiento_v3';
+    const QUESTION_COUNT = 20;
 
-<script>
-  "use strict";
+    const Q5_ROWS = [
+      ['q5_01_responsable_respaldos', 'Reunir y ordenar facturas y otros respaldos para contabilidad'],
+      ['q5_02_responsable_registro', 'Registro contable y preparación del Registro de Compras y Ventas'],
+      ['q5_03_responsable_declaraciones', 'Preparación y presentación de declaraciones juradas'],
+      ['q5_04_responsable_facturacion', 'Emisión de facturas y otras tareas vinculadas con la facturación'],
+      ['q5_05_responsable_procesos_sin', 'Atención de requerimientos, fiscalizaciones, rectificaciones u otros procesos del SIN'],
+      ['q5_06_responsable_asesoramiento', 'Asesoramiento o actualización en temas tributarios']
+    ];
 
-  // URL de la implementación web de Google Apps Script.
-  const SUBMISSION_ENDPOINT = "https://script.google.com/macros/s/AKfycbzESEpYHFerYfX0K8a9u8By3rIG8FBlJKLHmvGGOuIVaksCia5UfzN6hYZGajm3SxnSmg/exec";
-  const SCHEMA_VERSION = "SIN-CONTRIBUYENTES-2026-09-v2";
-  const DRAFT_KEY = "sin_costos_cumplimiento_draft_v2";
+    const Q10_ROWS = [
+      ['q10_01_gestion_respaldos', 'Buscar, ordenar o reconstruir facturas, registros u otros respaldos'],
+      ['q10_02_gestion_descargos', 'Preparar y presentar documentos, respuestas o descargos ante el SIN'],
+      ['q10_03_gestion_rectificaciones', 'Corregir el Registro de Compras y Ventas o rectificar declaraciones'],
+      ['q10_04_gestion_revision', 'Realizar una revisión contable o auditoría adicional'],
+      ['q10_05_gestion_abogado', 'Contratar un abogado tributarista u otro especialista legal tributario'],
+      ['q10_06_gestion_tramites', 'Contratar apoyo para trámites u otras gestiones administrativas']
+    ];
 
-  const responsibilityRows = [
-    "Reunir y ordenar facturas y otros respaldos para contabilidad",
-    "Registro contable y preparación del Registro de Compras y Ventas",
-    "Preparación y presentación de declaraciones tributarias",
-    "Emisión de facturas y otras tareas vinculadas con la facturación",
-    "Atención de requerimientos, fiscalizaciones u otros procesos del SIN",
-    "Capacitación o actualización en temas tributarios"
-  ];
-  const responsibilityOptions = ["Personal interno", "Contador o servicio externo", "Ambos", "No se realiza o no aplica"];
+    const Q17_ROWS = [
+      ['q17_01_facilidad_clasificar_actividad', 'Clasificar su actividad económica según rubros'],
+      ['q17_02_facilidad_emitir_facturas', 'Emitir facturas'],
+      ['q17_03_facilidad_organizar_comprobantes', 'Organizar facturas y comprobantes'],
+      ['q17_04_facilidad_contabilidad', 'Llevar la contabilidad'],
+      ['q17_05_facilidad_rcv', 'Completar el Registro de Compras y Ventas'],
+      ['q17_06_facilidad_iva', 'Preparar declaraciones juradas del IVA'],
+      ['q17_07_facilidad_it', 'Preparar declaraciones juradas del IT'],
+      ['q17_08_facilidad_iue', 'Preparar declaraciones juradas del IUE anual'],
+      ['q17_09_facilidad_estados_financieros', 'Preparar y presentar estados financieros'],
+      ['q17_10_facilidad_declaraciones_pagos', 'Presentar declaraciones y realizar pagos'],
+      ['q17_11_facilidad_comprender_obligaciones', 'Comprender las obligaciones tributarias'],
+      ['q17_12_facilidad_atender_sin', 'Atender solicitudes o revisiones del SIN']
+    ];
 
-  const fiscalizationRows = [
-    "Buscar, ordenar o reconstruir facturas, registros u otros respaldos",
-    "Preparar y presentar documentos, respuestas o descargos ante el SIN",
-    "Corregir el Registro de Compras y Ventas o rectificar declaraciones",
-    "Realizar una revisión contable o auditoría adicional",
-    "Contratar un abogado tributarista u otro especialista legal tributario",
-    "Contratar apoyo para trámites u otras gestiones administrativas"
-  ];
-  const fiscalizationOptions = fiscalizationRows.map((_, index) => index < 4
-    ? ["Personal interno", "Servicio externo", "No se realiza o no aplica"]
-    : ["Servicio externo", "No se realiza o no aplica"]);
+    const Q19_ROWS = [
+      ['q19_01_uso_siat', 'Oficina Virtual Tributaria (SIAT)'],
+      ['q19_02_uso_guias', 'Información Técnica, Guías de uso y consultas'],
+      ['q19_03_uso_asistencia', 'Asistencia en Línea, Servicios al ciudadano'],
+      ['q19_04_uso_contenido', 'Contenido Informativo Tributario']
+    ];
 
-  const difficultyRows = [
-    "Emitir facturas",
-    "Organizar facturas y comprobantes",
-    "Llevar la contabilidad",
-    "Completar el Registro de Compras y Ventas",
-    "Preparar el IVA",
-    "Preparar el IT",
-    "Preparar el IUE anual",
-    "Presentar declaraciones y realizar pagos",
-    "Comprender las obligaciones tributarias",
-    "Atender solicitudes o revisiones del SIN"
-  ];
-  const difficultyOptions = ["Muy fácil", "Fácil", "Ni fácil ni difícil", "Difícil", "Muy difícil", "No aplica"];
+    const escapeHtml = value => String(value).replace(/[&<>'"]/g, character => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+    }[character]));
 
-  const toolRows = [
-    "Oficina Virtual Tributaria (SIAT)",
-    "Información técnica, guías de uso y consulta",
-    "Asistencia en línea y servicios al ciudadano",
-    "Contenido informativo tributario"
-  ];
-  const toolOptions = ["Frecuentemente", "Algunas veces", "Nunca", "No lo conoce"];
-
-  const form = document.getElementById("surveyForm");
-  const allSteps = [...document.querySelectorAll(".step")];
-  const progressWrap = document.getElementById("progressWrap");
-  const progressBar = document.getElementById("progressBar");
-  const progressLabel = document.getElementById("progressLabel");
-  const moduleLabel = document.getElementById("moduleLabel");
-  const submitButton = document.getElementById("submitButton");
-  const submitStatus = document.getElementById("submitStatus");
-  const startedAt = new Date().toISOString();
-  let currentIndex = 0;
-  let submitPending = false;
-  let responseId = null;
-
-  function slug(text) {
-    return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
-  }
-
-  function renderMatrix(containerId, prefix, rows, options) {
-    const container = document.getElementById(containerId);
-    rows.forEach((row, index) => {
-      const item = document.createElement("fieldset");
-      item.className = "matrix-row";
-      const legend = document.createElement("strong");
-      legend.textContent = row;
-      item.appendChild(legend);
-      const choices = document.createElement("div");
-      choices.className = "matrix-options";
-      const rowOptions = Array.isArray(options[0]) ? options[index] : options;
-      rowOptions.forEach((option, optionIndex) => {
-        const label = document.createElement("label");
-        const input = document.createElement("input");
-        input.type = "radio";
-        input.name = `${prefix}_${index + 1}_${slug(row)}`;
-        input.value = option;
-        input.required = true;
-        input.id = `${prefix}_${index + 1}_${optionIndex + 1}`;
-        label.append(input, document.createTextNode(option));
-        choices.appendChild(label);
-      });
-      item.appendChild(choices);
-      container.appendChild(item);
-    });
-  }
-
-  renderMatrix("responsibilityMatrix", "q7", responsibilityRows, responsibilityOptions);
-  renderMatrix("fiscalizationMatrix", "q12", fiscalizationRows, fiscalizationOptions);
-  renderMatrix("difficultyMatrix", "q19", difficultyRows, difficultyOptions);
-  renderMatrix("toolsMatrix", "q21", toolRows, toolOptions);
-
-  function hasResponsibility(values) {
-    return [...document.querySelectorAll('#responsibilityMatrix input:checked')].some(input => values.includes(input.value));
-  }
-
-  function responsibilityForRow(rowNumber) {
-    return document.querySelector(`#responsibilityMatrix .matrix-row:nth-child(${rowNumber}) input:checked`)?.value || "";
-  }
-
-  function hasFiscalInternal() {
-    return ["Personal interno", "Ambos"].includes(responsibilityForRow(5));
-  }
-
-  function hasFiscalExternal() {
-    return ["Contador o servicio externo", "Ambos"].includes(responsibilityForRow(5));
-  }
-
-  function isStepRelevant(step) {
-    const branch = step.dataset.branch;
-    if (branch === "internal") return hasResponsibility(["Personal interno", "Ambos"]);
-    if (branch === "external") return hasResponsibility(["Contador o servicio externo", "Ambos"]);
-    if (branch === "fiscal-external") return hasFiscalExternal();
-    if (branch === "software") return form.elements.q14_usa_sistema?.value === "Sí";
-    return true;
-  }
-
-  function isSubbranchRelevant(group) {
-    if (group.dataset.subbranch === "fiscal-internal") return hasFiscalInternal();
-    if (group.dataset.subbranch === "record-other") return form.elements.q13_registro_contable?.value === "Otro";
-    return true;
-  }
-
-  function relevantSteps() { return allSteps.filter(isStepRelevant); }
-
-  function setBranchControls() {
-    allSteps.forEach(step => {
-      const stepRelevant = isStepRelevant(step);
-      step.querySelectorAll("[data-subbranch]").forEach(group => {
-        group.hidden = !stepRelevant || !isSubbranchRelevant(group);
-      });
-      step.querySelectorAll("input, select, textarea").forEach(control => {
-        const group = control.closest("[data-subbranch]");
-        const active = stepRelevant && (!group || isSubbranchRelevant(group));
-        control.disabled = !active || control.dataset.userDisabled === "true";
-      });
-    });
-  }
-
-  function showStep(step) {
-    allSteps.forEach(item => item.classList.toggle("active", item === step));
-    currentIndex = allSteps.indexOf(step);
-    setBranchControls();
-    const questionNumber = Number(step.dataset.q || 0);
-    const isIntro = step.dataset.step === "intro";
-    progressWrap.hidden = isIntro;
-    moduleLabel.textContent = step.dataset.module || "Encuesta";
-    if (questionNumber) {
-      progressLabel.textContent = `Pregunta ${questionNumber} de 22`;
-      progressBar.style.width = `${(questionNumber / 22) * 100}%`;
-    } else if (step.dataset.step === "review") {
-      progressLabel.textContent = "Revisión final";
-      progressBar.style.width = "100%";
-    } else if (step.dataset.step === "thanks") {
-      progressLabel.textContent = "Completado";
-      progressBar.style.width = "100%";
+    function option(name, value, label, type = 'radio', extra = '') {
+      return `<label class="option"><input type="${type}" name="${name}" value="${escapeHtml(value)}" ${extra}><span>${escapeHtml(label)}</span></label>`;
     }
-    step.querySelector(".error")?.classList.remove("show");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    saveDraft();
-  }
 
-  function nextRelevantIndex(from) {
-    for (let i = from + 1; i < allSteps.length; i += 1) if (isStepRelevant(allSteps[i])) return i;
-    return from;
-  }
+    function options(name, values, type = 'radio', required = true, attributes = '') {
+      return `<div class="options">${values.map((item, index) => {
+        const pair = Array.isArray(item) ? item : [item, item];
+        return option(name, pair[0], pair[1], type, `${required && index === 0 ? 'required' : ''} ${attributes}`);
+      }).join('')}</div>`;
+    }
 
-  function previousRelevantIndex(from) {
-    for (let i = from - 1; i >= 0; i -= 1) if (isStepRelevant(allSteps[i])) return i;
-    return from;
-  }
+    function actions(lastText = 'Siguiente') {
+      return `<div class="error" role="alert" aria-live="assertive"></div><div class="actions"><button class="btn btn-secondary" type="button" data-prev>Anterior</button><button class="btn btn-primary" type="button" data-next>${lastText}</button></div>`;
+    }
 
-  function selectedCount(fieldset) {
-    return fieldset.querySelectorAll('input[type="checkbox"]:checked').length;
-  }
+    function section(number, module, content, branch = '') {
+      return `<section class="step" data-q="${number}" data-module="${escapeHtml(module)}" ${branch ? `data-branch="${branch}"` : ''}><span class="eyebrow">${escapeHtml(module)}</span><h2>Pregunta ${number}</h2>${content}${actions(number === 20 ? 'Revisar respuestas' : 'Siguiente')}</section>`;
+    }
 
-  function validateSpecial(step) {
-    const q = step.dataset.q;
-    if (q === "9") {
-      const normal = Number(form.elements.q9_horas_mes.value || 0) * 60 + Number(form.elements.q9_minutos_mes.value || 0);
-      if (normal <= 0) return "Registre un tiempo mayor que cero para las actividades habituales.";
-      if (hasFiscalInternal() && !form.elements.q9_sin_requerimientos.checked) {
-        const fiscal = Number(form.elements.q9_req_horas_anio.value || 0) * 60 + Number(form.elements.q9_req_minutos_anio.value || 0);
-        if (fiscal <= 0) return "Registre el tiempo adicional dedicado a estos procesos o marque que no tuvo que atenderlos.";
+    function matrix(rows, optionFactory) {
+      return `<div class="matrix">${rows.map((row, index) => {
+        const rowOptions = optionFactory(index);
+        return `<fieldset class="matrix-row"><legend>${index + 1}. ${escapeHtml(row[1])}</legend><div class="matrix-options">${rowOptions.map((value, optionIndex) => `<label><input type="radio" name="${row[0]}" value="${escapeHtml(value)}" ${optionIndex === 0 ? 'required' : ''}>${escapeHtml(value)}</label>`).join('')}</div></fieldset>`;
+      }).join('')}</div>`;
+    }
+
+    function counter(inputId, maximum) {
+      return `<div class="counter" data-counter-for="${inputId}">0/${maximum} caracteres</div>`;
+    }
+
+    const infoSin = `<details class="info"><summary aria-label="Más información">i</summary><div class="info-card">Incluya solicitudes o comunicaciones formales del SIN que hayan exigido presentar documentos o información, aclarar o corregir datos, o atender una verificación o fiscalización dentro de un plazo.</div></details>`;
+
+    const questions = [];
+
+    questions.push(section(1, 'Perfil del contribuyente', `
+      <fieldset><legend class="question">¿Cuál es su relación con el negocio por el que responde esta encuesta?</legend>
+      ${options('q1_relacion', ['Propietario o socio', 'Representante legal', 'Administrador o gerente', 'Trabajador del negocio', 'Contador interno', 'Contador externo', 'Otro'])}</fieldset>`));
+
+    questions.push(section(2, 'Perfil del contribuyente', `
+      <p class="question">¿Cuántas personas trabajan actualmente en el negocio?</p>
+      <p class="hint">Inclúyase usted, así como propietarios, empleados y familiares que colaboran regularmente, reciban o no una remuneración.</p>
+      <div class="field"><label for="q2_personas">Número total de personas</label><input id="q2_personas" name="q2_personas" type="number" min="1" step="1" inputmode="numeric" required></div>`));
+
+    questions.push(section(3, 'Perfil del contribuyente', `
+      <fieldset><legend class="question">¿Cuál es la actividad económica principal del negocio?</legend>
+      ${options('q3_actividad', ['Comercio', 'Actividad Profesional', 'Finanzas', 'Industria', 'Construcción', 'Agropecuaria', 'Servicios', 'Transporte', 'Oficio', 'Otra'])}</fieldset>
+      <div class="conditional" data-condition="q3-other" hidden><div class="field"><label for="q3_actividad_otra">Otra. Especifique en una palabra o frase breve</label><input id="q3_actividad_otra" name="q3_actividad_otra" type="text" maxlength="30" required></div>${counter('q3_actividad_otra', 30)}</div>`));
+
+    questions.push(section(4, 'Gestión tributaria', `
+      <fieldset data-checkbox-required><legend class="question">En los últimos 12 meses, ¿cuáles de las siguientes obligaciones tributarias tuvo el negocio?</legend>
+      <p class="hint">Puede marcar más de una opción.</p>
+      ${options('q4_obligaciones', [['IVA, Formulario 200', 'IVA, Formulario 200'], ['IT, Formulario 400', 'IT, Formulario 400'], ['IUE anual', 'IUE anual'], ['RC-IVA o retenciones', 'RC-IVA o retenciones'], ['Otra', 'Otra']], 'checkbox', false, 'data-array')}</fieldset>
+      <div class="conditional" data-condition="q4-other" hidden><div class="field"><label for="q4_obligacion_otra">Otra obligación. Especifique</label><input id="q4_obligacion_otra" name="q4_obligacion_otra" type="text" maxlength="30" required></div>${counter('q4_obligacion_otra', 30)}</div>`));
+
+    questions.push(section(5, 'Gestión tributaria', `
+      <p class="question">En los últimos 12 meses, para cada una de las siguientes actividades tributarias, indique quién se ha encargado principalmente de realizarla.</p>
+      ${matrix(Q5_ROWS, index => index < 4 ? ['Personal interno dependiente', 'Contador o servicio externo', 'Ambos'] : ['Personal interno dependiente', 'Contador o servicio externo', 'Ambos', 'No se realiza'])}`));
+
+    questions.push(section(6, 'Gestión tributaria', `
+      <p class="question">¿Cuántas personas internas o dependientes del negocio participan en las tareas contables o tributarias señaladas en la pregunta anterior?</p>
+      <div class="reference"><strong>Actividades realizadas internamente:</strong><ul id="internalActivities"></ul></div>
+      <div class="field"><label for="q6_personas_internas">Número de personas</label><input id="q6_personas_internas" name="q6_personas_internas" type="number" min="1" step="1" inputmode="numeric" required></div>`, 'internal'));
+
+    questions.push(section(7, 'Gestión tributaria', `
+      <p class="question">Pensando en una sola persona de las que realizan estas tareas internamente en su empresa, indique cuánto tiempo dedica en promedio a estas actividades de cumplimiento tributario.</p>
+      <p class="hint">Si varias personas participan, responda por una persona típica. No sume el tiempo de todas.</p>
+      <div class="field"><label for="q7_horas_mes">Durante un mes habitual: horas totales al mes</label><input id="q7_horas_mes" name="q7_horas_mes" type="number" min="0" step="1" inputmode="numeric" required></div>
+      <div class="conditional" data-condition="fiscal-internal" hidden><div class="field"><label for="q7_horas_procesos_sin_12m">Durante los últimos 12 meses, tiempo adicional dedicado a atender requerimientos, fiscalizaciones, rectificaciones u otros procesos del SIN ${infoSin}<br>Horas totales en los últimos 12 meses</label><input id="q7_horas_procesos_sin_12m" name="q7_horas_procesos_sin_12m" type="number" min="0" step="1" inputmode="numeric" required></div></div>`, 'internal'));
+
+    questions.push(section(8, 'Gestión tributaria', `
+      <fieldset><legend class="question">¿Cuál es el salario mensual aproximado de una persona interna o dependiente que realiza estas actividades?</legend>
+      ${options('q8_tipo_remuneracion', [['Salario informado', 'Registrar salario mensual en bolivianos'], ['Propietario o familiar no remunerado', 'Es propietario o familiar no remunerado']])}</fieldset>
+      <div class="conditional" data-condition="q8-salary" hidden><div class="field"><label for="q8_salario_mensual_bs">Salario mensual en bolivianos (Bs)</label><input id="q8_salario_mensual_bs" name="q8_salario_mensual_bs" type="number" min="0" step="0.01" inputmode="decimal" required></div></div>`, 'internal'));
+
+    questions.push(section(9, 'Gestión tributaria', `
+      <p class="question">¿Cuánto paga normalmente al mes al contador o a los servicios contables o tributarios externos señalados en la pregunta 5?</p>
+      <p class="hint">Si paga con otra frecuencia, indique su equivalente mensual. No incluya costos relacionados con requerimientos o fiscalizaciones.</p>
+      <div class="reference"><strong>Actividades realizadas con apoyo externo:</strong><ul id="externalActivities"></ul></div>
+      <div class="field"><label for="q9_pago_externo_mensual_bs">Monto mensual en bolivianos (Bs)</label><input id="q9_pago_externo_mensual_bs" name="q9_pago_externo_mensual_bs" type="number" min="0" step="0.01" inputmode="decimal" required></div>`, 'external'));
+
+    questions.push(section(10, 'Atención de procesos del SIN', `
+      <p class="question">En los últimos 12 meses, indique de las siguientes acciones para atender requerimientos, fiscalizaciones, rectificaciones u otros procesos del SIN cuáles se gestionaron con servicios externos.</p>
+      <p class="hint">Seleccione una opción en cada fila.</p>
+      ${matrix(Q10_ROWS, index => index < 3 ? ['Personal interno o dependiente', 'Servicio externo'] : index === 3 ? ['Personal interno o dependiente', 'Servicio externo', 'No se realiza o no aplica'] : ['Servicio externo', 'No se realiza o no aplica'])}
+      <div class="field"><label for="q10_pago_servicios_externos_12m_bs">¿Cuánto pagó en total por esos servicios externos durante los últimos 12 meses? (Bs)</label><input id="q10_pago_servicios_externos_12m_bs" name="q10_pago_servicios_externos_12m_bs" type="number" min="0" step="0.01" inputmode="decimal" required></div>
+      <p class="hint">No incluya pagos ya registrados como parte del servicio contable mensual habitual, ni impuestos, multas o intereses. Si no realizó un pago adicional, escriba 0.</p>`, 'fiscal-external'));
+
+    questions.push(section(11, 'Sistemas informáticos', `
+      <fieldset><legend class="question">¿Cómo se llevan principalmente la contabilidad o el registro de las operaciones del negocio?</legend>
+      ${options('q11_metodo_registro', ['Libros o registros en papel', 'Hojas de cálculo, por ejemplo Excel', 'Sistema informático propio', 'Sistema informático contratado o de un proveedor externo', 'Sistema informático del contador', 'Otro'])}</fieldset>
+      <div class="conditional" data-condition="q11-other" hidden><div class="field"><label for="q11_metodo_otro">Otro. Especifique</label><input id="q11_metodo_otro" name="q11_metodo_otro" type="text" maxlength="30" required></div>${counter('q11_metodo_otro', 30)}</div>`));
+
+    questions.push(section(12, 'Sistemas informáticos', `
+      <fieldset><legend class="question">¿El negocio utiliza algún software o sistema informático para su gestión contable o tributaria, incluida la facturación o el registro de compras y ventas?</legend>
+      <p class="hint">No considere sistemas utilizados exclusivamente para inventario u otras funciones ajenas a la gestión tributaria.</p>
+      ${options('q12_usa_software', ['Sí', 'No'])}</fieldset>`));
+
+    questions.push(section(13, 'Sistemas informáticos', `
+      <p class="question">Durante los últimos 12 meses, ¿cuánto pagó por el software o sistema informático utilizado para la gestión contable, tributaria o para facturación de su negocio?</p>
+      <p class="hint">Incluya licencias, suscripciones y mantenimiento. Si el mismo sistema sirve para varias funciones, incluya su costo una sola vez.</p>
+      <fieldset>${options('q13_tipo_costo_software', [['Monto informado', 'Registrar el monto total pagado al año'], ['Incluido en el pago al contador', 'Está incluido en el pago al contador'], ['Es gratuito', 'Es gratuito']])}</fieldset>
+      <div class="conditional" data-condition="q13-amount" hidden><div class="field"><label for="q13_costo_software_12m_bs">Monto total pagado al año en bolivianos (Bs)</label><input id="q13_costo_software_12m_bs" name="q13_costo_software_12m_bs" type="number" min="0" step="0.01" inputmode="decimal" required></div></div>`, 'software'));
+
+    questions.push(section(14, 'Facturación', `
+      <fieldset><legend class="question">¿Qué modalidad utiliza actualmente su negocio para emitir facturas?</legend>
+      ${options('q14_modalidad_facturacion', ['Facturación Electrónica en Línea', 'Facturación Computarizada en Línea', 'Facturación Portal Web en Línea', 'Facturación Manual'])}</fieldset>`));
+
+    questions.push(section(15, 'Facturación', `
+      <fieldset><legend class="question">Aproximadamente, ¿cuántas facturas emite el negocio durante un mes normal?</legend>
+      ${options('q15_tipo_respuesta_facturas', [['Cantidad informada', 'Registrar el número de facturas al mes'], ['No sabe', 'No sabe']])}</fieldset>
+      <div class="conditional" data-condition="q15-amount" hidden><div class="field"><label for="q15_facturas_mes">Número de facturas al mes</label><input id="q15_facturas_mes" name="q15_facturas_mes" type="number" min="0" step="1" inputmode="numeric" required></div></div>`));
+
+    questions.push(section(16, 'Percepción y obstáculos', `
+      <fieldset><legend class="question">En general, ¿qué tan fácil o difícil le resulta cumplir con las obligaciones tributarias del negocio?</legend>
+      ${options('q16_facilidad_general', ['Muy fácil', 'Fácil', 'Ni fácil ni difícil', 'Difícil', 'Muy difícil'])}</fieldset>`));
+
+    questions.push(section(17, 'Percepción y obstáculos', `
+      <p class="question">¿Qué tan fácil o difícil considera cada una de las siguientes actividades?</p>
+      ${matrix(Q17_ROWS, () => ['Muy fácil', 'Fácil', 'Ni fácil ni difícil', 'Difícil', 'Muy difícil', 'No aplica'])}`));
+
+    questions.push(section(18, 'Percepción y obstáculos', `
+      <fieldset data-checkbox-required data-max="3"><legend class="question">¿Cuáles son los tres principales obstáculos que encuentra para cumplir con sus obligaciones tributarias?</legend>
+      <p class="hint">Seleccione como máximo tres opciones.</p>
+      ${options('q18_obstaculos', ['Tiempo que requieren los trámites o actividades', 'Dificultad para comprender los requisitos o las obligaciones', 'Costo de servicios contables o tributarios externos', 'Dificultades de acceso, uso o funcionamiento de herramientas digitales', 'Necesidad de capacitación u orientación', 'Otro', 'Ninguno'], 'checkbox', false, 'data-array')}</fieldset>
+      <div class="conditional" data-condition="q18-other" hidden><div class="field"><label for="q18_obstaculo_otro">Otro obstáculo. Especifique</label><input id="q18_obstaculo_otro" name="q18_obstaculo_otro" type="text" maxlength="100" required></div>${counter('q18_obstaculo_otro', 100)}</div>`));
+
+    questions.push(section(19, 'Herramientas digitales del SIN', `
+      <p class="question">¿Con qué frecuencia utiliza cada una de las siguientes herramientas digitales del SIN para cumplir con sus obligaciones tributarias?</p>
+      <p class="hint">Considere su uso durante los últimos 12 meses.</p>
+      ${matrix(Q19_ROWS, () => ['Mucho', 'Poco', 'Nada', 'No lo conoce'])}`));
+
+    questions.push(section(20, 'Cierre', `
+      <p class="question">¿Qué cambio facilitaría más el cumplimiento de sus obligaciones tributarias?</p>
+      <div class="field"><label for="q20_cambio">Respuesta (opcional)</label><textarea id="q20_cambio" name="q20_cambio" maxlength="150" placeholder="Escriba aquí su respuesta"></textarea></div>${counter('q20_cambio', 150)}`));
+
+    document.getElementById('questionContainer').innerHTML = questions.join('');
+
+    const form = document.getElementById('surveyForm');
+    const allSteps = [...document.querySelectorAll('.step')];
+    const progressWrap = document.getElementById('progressWrap');
+    const progressBar = document.getElementById('progressBar');
+    const progressLabel = document.getElementById('progressLabel');
+    const moduleLabel = document.getElementById('moduleLabel');
+    const submitButton = document.getElementById('submitButton');
+    const submitStatus = document.getElementById('submitStatus');
+    const draftNote = document.getElementById('draftNote');
+
+    let currentIndex = 0;
+    let submitting = false;
+    let responseId = createId();
+    let startedAt = new Date().toISOString();
+
+    function createId() {
+      return self.crypto && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `resp-${Date.now()}-${Math.random().toString(16).slice(2)}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function selectedValue(name) {
+      return form.querySelector(`input[name="${name}"]:checked`)?.value || '';
+    }
+
+    function checkedValues(name) {
+      return [...form.querySelectorAll(`input[name="${name}"]:checked`)].map(input => input.value);
+    }
+
+    function q5Value(index) {
+      return selectedValue(Q5_ROWS[index][0]);
+    }
+
+    function hasInternalHabitual() {
+      return [0, 1, 2, 3].some(index => ['Personal interno dependiente', 'Ambos'].includes(q5Value(index)));
+    }
+
+    function hasExternalHabitual() {
+      return [0, 1, 2, 3].some(index => ['Contador o servicio externo', 'Ambos'].includes(q5Value(index)));
+    }
+
+    function hasInternalSin() {
+      return ['Personal interno dependiente', 'Ambos'].includes(q5Value(4));
+    }
+
+    function hasExternalSin() {
+      return ['Contador o servicio externo', 'Ambos'].includes(q5Value(4));
+    }
+
+    function isStepRelevant(step) {
+      switch (step.dataset.branch) {
+        case 'internal': return hasInternalHabitual();
+        case 'external': return hasExternalHabitual();
+        case 'fiscal-external': return hasExternalSin();
+        case 'software': return selectedValue('q12_usa_software') === 'Sí';
+        default: return true;
       }
     }
-    if (q === "10" && !form.elements.q10_sin_remuneracion.checked && form.elements.q10_salario_mensual.value === "") return "Registre el salario mensual o marque que la persona no recibe una remuneración específica.";
-    if (q === "15" && !form.elements.q15_sistema_gratuito.checked && form.elements.q15_costo_sistema_anual.value === "") return "Registre el costo anual o marque que el sistema es gratuito.";
-    if (q === "17" && !form.elements.q17_no_sabe_facturas.checked && form.elements.q17_facturas_mes.value === "") return "Registre el número de facturas o marque que no lo sabe.";
-    return "";
-  }
 
-  function validateStep(step) {
-    const error = step.querySelector(".error");
-    error.classList.remove("show");
-    for (const fieldset of step.querySelectorAll("[data-checkbox-required]")) {
-      const count = selectedCount(fieldset);
-      if (!count) return displayError(error, "Seleccione al menos una opción.");
-      if (fieldset.dataset.max && count > Number(fieldset.dataset.max)) return displayError(error, `Seleccione como máximo ${fieldset.dataset.max} opciones.`);
+    function toggleCondition(name, visible) {
+      document.querySelectorAll(`[data-condition="${name}"]`).forEach(group => { group.hidden = !visible; });
     }
-    const invalid = [...step.querySelectorAll("input, select, textarea")].find(control => !control.disabled && !control.checkValidity());
-    if (invalid) {
-      invalid.focus();
-      return displayError(error, "Complete la respuesta antes de continuar.");
+
+    function updateReferenceList(id, acceptedValues) {
+      const list = document.getElementById(id);
+      if (!list) return;
+      const selected = Q5_ROWS.slice(0, 4).filter((row, index) => acceptedValues.includes(q5Value(index)));
+      list.innerHTML = selected.length
+        ? selected.map(row => `<li>${escapeHtml(row[1])}</li>`).join('')
+        : '<li>No se seleccionaron actividades.</li>';
     }
-    const special = validateSpecial(step);
-    if (special) return displayError(error, special);
-    return true;
-  }
 
-  function displayError(node, message) {
-    node.textContent = message;
-    node.classList.add("show");
-    return false;
-  }
+    function syncLogic() {
+      toggleCondition('q3-other', selectedValue('q3_actividad') === 'Otra');
+      toggleCondition('q4-other', checkedValues('q4_obligaciones').includes('Otra'));
+      toggleCondition('fiscal-internal', hasInternalSin());
+      toggleCondition('q8-salary', selectedValue('q8_tipo_remuneracion') === 'Salario informado');
+      toggleCondition('q11-other', selectedValue('q11_metodo_registro') === 'Otro');
+      toggleCondition('q13-amount', selectedValue('q13_tipo_costo_software') === 'Monto informado');
+      toggleCondition('q15-amount', selectedValue('q15_tipo_respuesta_facturas') === 'Cantidad informada');
+      toggleCondition('q18-other', checkedValues('q18_obstaculos').includes('Otro'));
 
-  document.addEventListener("click", event => {
-    const next = event.target.closest("[data-next]");
-    const prev = event.target.closest("[data-prev]");
-    if (next) {
-      const step = allSteps[currentIndex];
-      if (!validateStep(step)) return;
-      const nextIndex = nextRelevantIndex(currentIndex);
-      const target = allSteps[nextIndex];
-      if (target.dataset.step === "review") buildReview();
-      showStep(target);
-    }
-    if (prev) showStep(allSteps[previousRelevantIndex(currentIndex)]);
-    if (!event.target.closest("details.info")) document.querySelectorAll("details.info[open]").forEach(detail => detail.removeAttribute("open"));
-  });
+      updateReferenceList('internalActivities', ['Personal interno dependiente', 'Ambos']);
+      updateReferenceList('externalActivities', ['Contador o servicio externo', 'Ambos']);
 
-  document.addEventListener("change", event => {
-    const input = event.target;
-    if (input.matches("[data-exclusive]") && input.checked) {
-      input.closest("fieldset").querySelectorAll('input[type="checkbox"]:not([data-exclusive])').forEach(box => { box.checked = false; });
-    } else if (input.type === "checkbox" && input.checked) {
-      input.closest("fieldset")?.querySelectorAll("[data-exclusive]").forEach(box => { box.checked = false; });
-    }
-    const limitedFieldset = input.closest("fieldset[data-max]");
-    if (input.type === "checkbox" && input.checked && limitedFieldset) {
-      const max = Number(limitedFieldset.dataset.max);
-      if (selectedCount(limitedFieldset) > max) {
-        input.checked = false;
-        displayError(input.closest(".step").querySelector(".error"), `Seleccione como máximo ${max} opciones.`);
-        return;
-      }
-    }
-    if (input.dataset.disableTargets) {
-      input.dataset.disableTargets.split(",").forEach(id => {
-        const target = document.getElementById(id);
-        target.disabled = input.checked;
-        target.dataset.userDisabled = input.checked ? "true" : "false";
-        if (input.checked) target.value = target.id.includes("minutos") ? "0" : "";
-      });
-    }
-    if (input.name === "q14_usa_sistema" || input.name === "q13_registro_contable" || input.closest("#responsibilityMatrix")) setBranchControls();
-    saveDraft();
-  });
-
-  form.addEventListener("input", saveDraft);
-
-  function collectAnswers() {
-    const data = {};
-    [...form.elements].forEach(control => {
-      if (!control.name || control.disabled || control.type === "button" || control.type === "submit") return;
-      if (control.type === "radio") {
-        if (control.checked) data[control.name] = control.value;
-        return;
-      }
-      if (control.type === "checkbox") {
-        if (control.name === "q5_obligaciones" || control.name === "q20_obstaculos") {
-          if (!data[control.name]) data[control.name] = [];
-          if (control.checked) data[control.name].push(control.value);
-        } else {
-          data[control.name] = control.checked ? control.value : "No";
-        }
-        return;
-      }
-      data[control.name] = control.value;
-    });
-    return data;
-  }
-
-  function saveDraft() {
-    try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ answers: collectAnswers(), savedAt: new Date().toISOString() })); } catch (_) { /* El almacenamiento local puede estar deshabilitado. */ }
-  }
-
-  function restoreDraft() {
-    try {
-      const draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null");
-      if (!draft?.answers) return;
-      Object.entries(draft.answers).forEach(([name, value]) => {
-        const controls = form.elements[name];
-        if (!controls) return;
-        const list = controls.length && !controls.tagName ? [...controls] : [controls];
-        list.forEach(control => {
-          if (control.type === "radio") control.checked = control.value === value;
-          else if (control.type === "checkbox") control.checked = Array.isArray(value) ? value.includes(control.value) : value === control.value;
-          else control.value = value;
+      allSteps.forEach(step => {
+        const relevant = isStepRelevant(step);
+        step.querySelectorAll('input, textarea').forEach(control => {
+          const inHiddenCondition = Boolean(control.closest('.conditional[hidden]'));
+          control.disabled = !relevant || inHiddenCondition;
         });
       });
-    } catch (_) { localStorage.removeItem(DRAFT_KEY); }
-  }
-
-  function friendlyValue(value) {
-    if (Array.isArray(value)) return value.join(", ");
-    if (value === "") return "Sin respuesta";
-    return String(value);
-  }
-
-  function questionTitle(step) {
-    const text = step.querySelector(".question")?.textContent?.trim() || `Pregunta ${step.dataset.q}`;
-    return `Pregunta ${step.dataset.q}. ${text}`;
-  }
-
-  function buildReview() {
-    const answers = collectAnswers();
-    const list = document.getElementById("reviewList");
-    list.innerHTML = "";
-    allSteps.filter(step => step.dataset.q && isStepRelevant(step)).forEach(step => {
-      const prefix = `q${step.dataset.q}_`;
-      const values = Object.entries(answers).filter(([key]) => key.startsWith(prefix)).map(([key, value]) => `${key.replace(prefix, "").replaceAll("_", " ")}: ${friendlyValue(value)}`);
-      const item = document.createElement("div");
-      item.className = "review-item";
-      item.innerHTML = `<strong></strong><span></span>`;
-      item.querySelector("strong").textContent = questionTitle(step);
-      item.querySelector("span").textContent = values.join("\n") || "No corresponde por el salto aplicado.";
-      list.appendChild(item);
-    });
-  }
-
-  function buildPayload() {
-    responseId ||= (crypto.randomUUID ? crypto.randomUUID() : `resp-${Date.now()}-${Math.random().toString(16).slice(2)}`);
-    const now = new Date();
-    const params = new URLSearchParams(location.search);
-    return {
-      schema_version: SCHEMA_VERSION,
-      questionnaire: "contribuyentes",
-      response_id: responseId,
-      grupo: params.get("grupo") || "sin_grupo",
-      started_at: startedAt,
-      submitted_at: now.toISOString(),
-      duration_seconds: Math.round((now - new Date(startedAt)) / 1000),
-      page_url: location.href,
-      user_agent: navigator.userAgent,
-      answers: collectAnswers()
-    };
-  }
-
-  async function postPayload(payload) {
-    await fetch(SUBMISSION_ENDPOINT, {
-      method: "POST",
-      mode: "no-cors",
-      cache: "no-store",
-      headers: { "Content-Type": "text/plain;charset=UTF-8" },
-      body: JSON.stringify(payload)
-    });
-  }
-
-  function verifyStored(id) {
-    return new Promise(resolve => {
-      const callbackName = `sinVerify_${Date.now()}_${Math.random().toString(16).slice(2)}`;
-      const script = document.createElement("script");
-      const cleanup = result => {
-        window.clearTimeout(timer);
-        delete window[callbackName];
-        script.remove();
-        resolve(result);
-      };
-      window[callbackName] = data => cleanup(Boolean(data && data.found));
-      script.onerror = () => cleanup(false);
-      script.src = `${SUBMISSION_ENDPOINT}?response_id=${encodeURIComponent(id)}&callback=${callbackName}&t=${Date.now()}`;
-      const timer = window.setTimeout(() => cleanup(false), 6000);
-      document.head.appendChild(script);
-    });
-  }
-
-  async function waitUntilStored(id) {
-    for (let attempt = 0; attempt < 5; attempt += 1) {
-      if (await verifyStored(id)) return true;
-      await new Promise(resolve => window.setTimeout(resolve, 1000 + attempt * 500));
     }
-    return false;
-  }
 
-  form.addEventListener("submit", async event => {
-    event.preventDefault();
-    if (submitPending) return;
-    if (SUBMISSION_ENDPOINT.includes("PEGAR_AQUI")) {
-      return displayError(allSteps[currentIndex].querySelector(".error"), "La encuesta todavía no tiene configurada la dirección de almacenamiento. Revise la guía de instalación.");
+    function showStep(step) {
+      syncLogic();
+      allSteps.forEach(item => item.classList.toggle('active', item === step));
+      currentIndex = allSteps.indexOf(step);
+      const question = Number(step.dataset.q || 0);
+      const intro = step.dataset.step === 'intro';
+      progressWrap.hidden = intro;
+      moduleLabel.textContent = step.dataset.module || 'Encuesta';
+      if (question) {
+        progressLabel.textContent = `Pregunta ${question} de ${QUESTION_COUNT}`;
+        progressBar.style.width = `${(question / QUESTION_COUNT) * 100}%`;
+      } else if (step.dataset.step === 'review') {
+        progressLabel.textContent = 'Revisión final';
+        progressBar.style.width = '100%';
+      } else if (step.dataset.step === 'thanks') {
+        progressLabel.textContent = 'Completado';
+        progressBar.style.width = '100%';
+      }
+      step.querySelector('.error')?.classList.remove('show');
+      saveDraft();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => step.querySelector('h1, h2')?.setAttribute('tabindex', '-1'), 0);
     }
-    submitPending = true;
-    submitButton.disabled = true;
-    submitStatus.textContent = "Guardando la respuesta…";
-    submitStatus.classList.add("show");
-    const payload = buildPayload();
-    sessionStorage.setItem("last_submission", JSON.stringify(payload));
-    try {
-      await postPayload(payload);
-      const stored = await waitUntilStored(payload.response_id);
-      if (!stored) throw new Error("La respuesta no apareció en la hoja de destino.");
-      submitPending = false;
+
+    function nextRelevantIndex(from) {
+      for (let index = from + 1; index < allSteps.length; index += 1) {
+        if (isStepRelevant(allSteps[index])) return index;
+      }
+      return from;
+    }
+
+    function previousRelevantIndex(from) {
+      for (let index = from - 1; index >= 0; index -= 1) {
+        if (isStepRelevant(allSteps[index])) return index;
+      }
+      return from;
+    }
+
+    function showError(node, message) {
+      node.textContent = message;
+      node.classList.add('show');
+      node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return false;
+    }
+
+    function validateStep(step) {
+      syncLogic();
+      const error = step.querySelector('.error');
+      error.classList.remove('show');
+
+      for (const fieldset of step.querySelectorAll('[data-checkbox-required]')) {
+        const boxes = [...fieldset.querySelectorAll('input[type="checkbox"]:not(:disabled)')];
+        const count = boxes.filter(box => box.checked).length;
+        if (!count) return showError(error, 'Seleccione al menos una opción.');
+        if (fieldset.dataset.max && count > Number(fieldset.dataset.max)) {
+          return showError(error, `Seleccione como máximo ${fieldset.dataset.max} opciones.`);
+        }
+      }
+
+      const invalid = [...step.querySelectorAll('input, textarea')]
+        .find(control => !control.disabled && !control.checkValidity());
+      if (invalid) {
+        invalid.focus();
+        const message = invalid.type === 'radio' || invalid.type === 'checkbox'
+          ? 'Seleccione al menos una opción.'
+          : 'Complete la respuesta antes de continuar.';
+        return showError(error, message);
+      }
+      return true;
+    }
+
+    function enforceExclusiveAndMaximum(input) {
+      const fieldset = input.closest('fieldset');
+      if (!fieldset || input.type !== 'checkbox' || !input.checked) return true;
+
+      if (input.name === 'q18_obstaculos') {
+        const boxes = [...fieldset.querySelectorAll(`input[name="${input.name}"]`)];
+        if (input.value === 'Ninguno') {
+          boxes.filter(box => box !== input).forEach(box => { box.checked = false; });
+        } else {
+          const none = boxes.find(box => box.value === 'Ninguno');
+          if (none) none.checked = false;
+        }
+      }
+
+      const maximum = Number(fieldset.dataset.max || 0);
+      if (maximum) {
+        const checked = [...fieldset.querySelectorAll('input[type="checkbox"]:checked')];
+        if (checked.length > maximum) {
+          input.checked = false;
+          showError(input.closest('.step').querySelector('.error'), `Seleccione como máximo ${maximum} opciones.`);
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function collectAnswers() {
+      const answers = {};
+      const seen = new Set();
+      [...form.elements].forEach(control => {
+        if (!control.name || control.disabled || seen.has(control.name) || ['button', 'submit'].includes(control.type)) return;
+        seen.add(control.name);
+        const group = [...form.querySelectorAll(`[name="${control.name}"]`)].filter(item => !item.disabled);
+        if (control.type === 'radio') {
+          const checked = group.find(item => item.checked);
+          if (checked) answers[control.name] = checked.value;
+        } else if (control.type === 'checkbox') {
+          if (control.hasAttribute('data-array')) {
+            answers[control.name] = group.filter(item => item.checked).map(item => item.value);
+          } else {
+            answers[control.name] = control.checked ? control.value : 'No';
+          }
+        } else {
+          answers[control.name] = control.value.trim();
+        }
+      });
+      return answers;
+    }
+
+    function saveDraft() {
+      if (submitting) return;
+      try {
+        localStorage.setItem(DRAFT_KEY, JSON.stringify({
+          responseId,
+          startedAt,
+          answers: collectAnswers(),
+          savedAt: new Date().toISOString()
+        }));
+      } catch (_) { /* El almacenamiento local puede estar deshabilitado. */ }
+    }
+
+    function restoreDraft() {
+      try {
+        const draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null');
+        if (!draft || !draft.answers) return false;
+        responseId = draft.responseId || responseId;
+        startedAt = draft.startedAt || startedAt;
+
+        Object.entries(draft.answers).forEach(([name, value]) => {
+          const node = form.elements[name];
+          if (!node) return;
+          const controls = node.length !== undefined && !node.tagName ? [...node] : [node];
+          controls.forEach(control => {
+            if (control.type === 'radio') control.checked = control.value === value;
+            else if (control.type === 'checkbox') control.checked = Array.isArray(value) ? value.includes(control.value) : value === control.value;
+            else control.value = value;
+          });
+        });
+        draftNote.hidden = false;
+        syncLogic();
+        updateCounters();
+        return true;
+      } catch (_) {
+        localStorage.removeItem(DRAFT_KEY);
+        return false;
+      }
+    }
+
+    function clearDraft() {
       localStorage.removeItem(DRAFT_KEY);
-      document.getElementById("confirmationId").textContent = `Código de confirmación: ${payload.response_id}`;
-      showStep(allSteps.find(step => step.dataset.step === "thanks"));
-    } catch (error) {
-      submitPending = false;
-      submitButton.disabled = false;
-      submitStatus.textContent = `No fue posible confirmar el guardado: ${error.message}`;
+      form.reset();
+      responseId = createId();
+      startedAt = new Date().toISOString();
+      draftNote.hidden = true;
+      syncLogic();
+      updateCounters();
     }
-  });
 
-  restoreDraft();
-  setBranchControls();
-</script>
+    function labelForControl(control) {
+      const matrixLegend = control.closest('.matrix-row')?.querySelector('legend')?.textContent.trim();
+      if (matrixLegend) return matrixLegend;
+      const explicit = control.id ? form.querySelector(`label[for="${control.id}"]`)?.textContent.trim() : '';
+      return explicit || '';
+    }
+
+    function reviewLines(step, answers) {
+      const lines = [];
+      const seen = new Set();
+      [...step.querySelectorAll('input, textarea')].forEach(control => {
+        if (!control.name || control.disabled || seen.has(control.name)) return;
+        seen.add(control.name);
+        const value = answers[control.name];
+        if (typeof value === 'undefined' || value === '' || (Array.isArray(value) && !value.length)) return;
+        const display = Array.isArray(value) ? value.join(', ') : String(value);
+        const label = labelForControl(control);
+        lines.push(label ? `${label}: ${display}` : display);
+      });
+      return lines.length ? lines : ['Sin respuesta (pregunta opcional).'];
+    }
+
+    function buildReview() {
+      const answers = collectAnswers();
+      const list = document.getElementById('reviewList');
+      list.innerHTML = '';
+      allSteps.filter(step => step.dataset.q && isStepRelevant(step)).forEach(step => {
+        const title = step.querySelector('.question')?.textContent.trim() || `Pregunta ${step.dataset.q}`;
+        const item = document.createElement('div');
+        item.className = 'review-item';
+        const heading = document.createElement('strong');
+        heading.textContent = `Pregunta ${step.dataset.q}. ${title}`;
+        const text = document.createElement('div');
+        text.textContent = reviewLines(step, answers).join('\n');
+        item.append(heading, text);
+        list.appendChild(item);
+      });
+    }
+
+    function buildPayload() {
+      const submitted = new Date();
+      const sourceGroup = new URLSearchParams(location.search).get('grupo') || '';
+      return {
+        schema_version: SCHEMA_VERSION,
+        questionnaire: 'costos_cumplimiento_mype_bolivia',
+        response_id: responseId,
+        source_group: sourceGroup.slice(0, 100),
+        started_at: startedAt,
+        submitted_at: submitted.toISOString(),
+        duration_seconds: Math.max(0, Math.round((submitted - new Date(startedAt)) / 1000)),
+        answers: collectAnswers()
+      };
+    }
+
+    function sendPayload(payload) {
+      return new Promise((resolve, reject) => {
+        if (!(window.google && google.script && google.script.run)) {
+          reject(new Error('Abra la encuesta desde la URL publicada de la aplicación web de Apps Script.'));
+          return;
+        }
+        google.script.run
+          .withSuccessHandler(resolve)
+          .withFailureHandler(error => reject(new Error(error && error.message ? error.message : String(error))))
+          .guardarRespuesta(payload);
+      });
+    }
+
+    function updateCounters() {
+      document.querySelectorAll('[data-counter-for]').forEach(counterNode => {
+        const input = document.getElementById(counterNode.dataset.counterFor);
+        if (!input) return;
+        counterNode.textContent = `${input.value.length}/${input.maxLength} caracteres`;
+      });
+    }
+
+    document.addEventListener('click', event => {
+      const next = event.target.closest('[data-next]');
+      const previous = event.target.closest('[data-prev]');
+      if (next) {
+        const step = allSteps[currentIndex];
+        if (!validateStep(step)) return;
+        const target = allSteps[nextRelevantIndex(currentIndex)];
+        if (target.dataset.step === 'review') buildReview();
+        showStep(target);
+      }
+      if (previous) showStep(allSteps[previousRelevantIndex(currentIndex)]);
+      if (!event.target.closest('details.info')) {
+        document.querySelectorAll('details.info[open]').forEach(detail => detail.removeAttribute('open'));
+      }
+    });
+
+    form.addEventListener('change', event => {
+      if (!enforceExclusiveAndMaximum(event.target)) return;
+      syncLogic();
+      saveDraft();
+    });
+
+    form.addEventListener('input', () => {
+      updateCounters();
+      saveDraft();
+    });
+
+    document.getElementById('clearDraft').addEventListener('click', clearDraft);
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (submitting) return;
+      const reviewStep = allSteps[currentIndex];
+      const relevantQuestionSteps = allSteps.filter(step => step.dataset.q && isStepRelevant(step));
+      for (const step of relevantQuestionSteps) {
+        if (!validateStep(step)) {
+          showStep(step);
+          return;
+        }
+      }
+
+      submitting = true;
+      submitButton.disabled = true;
+      submitStatus.textContent = 'Guardando la respuesta…';
+      submitStatus.classList.add('show');
+      const payload = buildPayload();
+
+      try {
+        const result = await sendPayload(payload);
+        if (!result || !result.ok) throw new Error(result && result.error ? result.error : 'El servidor no confirmó el guardado.');
+        localStorage.removeItem(DRAFT_KEY);
+        submitStatus.textContent = 'Respuesta guardada correctamente.';
+        document.getElementById('confirmationId').textContent = `Código técnico de confirmación: ${result.responseId}`;
+        showStep(allSteps.find(step => step.dataset.step === 'thanks'));
+      } catch (error) {
+        submitting = false;
+        submitButton.disabled = false;
+        submitStatus.textContent = `No fue posible guardar la respuesta. ${error.message} Sus respuestas siguen guardadas en este dispositivo.`;
+        showError(reviewStep.querySelector('.error'), 'Revise su conexión e intente enviar nuevamente.');
+      }
+    });
+
+    restoreDraft();
+    syncLogic();
+    updateCounters();
+  </script>
 </body>
 </html>
